@@ -48,11 +48,15 @@
   <ItemGroup>
     <Compile Include="Common\Converter.cs" />
     <Compile Include="Common\DataCleaner.cs" />
+    <Compile Include="Controller\CacheController.cs" />
     <Compile Include="Controller\FileController.cs" />
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="Controller\OpCodeController.cs" />
+    <Compile Include="Controller\OperationController.cs" />
+    <Compile Include="Controller\Simulator.cs" />
     <Compile Include="Data\DataSegment.cs" />
     <Compile Include="Data\OpParameters.cs" />
+    <Compile Include="Data\Register.cs" />
     <Compile Include="Data\StaticData.cs" />
     <Compile Include="Data\SystemData.cs" />
     <Compile Include="Data\TextSegment.cs" />
@@ -157,6 +161,7 @@
     <None Include="Resources\b_save.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\fas_icon.png" />
     <Content Include="Resources\system_input.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

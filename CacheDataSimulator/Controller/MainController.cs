@@ -13,14 +13,40 @@ namespace CacheDataSimulator.Controller
     {
         public List<TextSegment> txSG;
         public List<DataSegment> dxSG;
+        public List<Register> rxSG;
         private DataTable TextSGDT;
         private DataTable DataSGDT;
+        private DataTable RegisterDT;
 
         public MainController()
         {
         }
 
-        // MAIN EVENTS
+        public List<Register> GenerateRegister()
+        {
+            rxSG = new List<Register>();
+            for (int i = 0; i < 32; i++)
+            {
+                rxSG.Add(new Register() { 
+                    Name = "x"+ i.ToString(),
+                    Value = "0x00000000"
+                });
+            }
+            return rxSG;
+        }
+        public DataTable GenerateRegisterSGDT()
+        {
+            RegisterDT = new DataTable();
+            RegisterDT.Columns.Add("Name", typeof(string));
+            RegisterDT.Columns.Add("Value", typeof(string));
+
+            for (int i = 0; i < 32; i++)
+            {
+                RegisterDT.Rows.Add(rxSG[i].Name, rxSG[i].Value);
+            }
+            return RegisterDT;
+        }
+            // MAIN EVENTS
         public string BuildSourceCode(string blockSize, string cacheSize, string sourceCode, bool IsMRU, bool IsLRU)
         {
             string initErr = string.Empty;
@@ -102,7 +128,7 @@ namespace CacheDataSimulator.Controller
 
             txSegment = new List<TextSegment>();
             err = string.Empty;
-            List<string> txCode = ValidateTextSegment.ValidateTS(code, out err, out txSegment);
+            List<string> txCode = ValidateTextSegment.ValidateTS(dataSG, code, out err, out txSegment);
             msgErr += err;
 
             return msgErr;

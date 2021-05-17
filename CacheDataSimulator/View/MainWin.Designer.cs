@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWin));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWin));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel13 = new System.Windows.Forms.Panel();
@@ -238,6 +238,7 @@
             this.SingleStepBtn.Size = new System.Drawing.Size(40, 32);
             this.SingleStepBtn.TabIndex = 7;
             this.SingleStepBtn.UseVisualStyleBackColor = false;
+            this.SingleStepBtn.Click += new System.EventHandler(this.SingleStepBtn_Click);
             this.SingleStepBtn.MouseLeave += new System.EventHandler(this.SingleStepBtn_MouseLeave);
             this.SingleStepBtn.MouseHover += new System.EventHandler(this.SingleStepBtn_MouseHover);
             // 
@@ -492,7 +493,7 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.panel7.BackgroundImage = global::CacheDataSimulator.Properties.Resources.risc_v_icon;
+            this.panel7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel7.BackgroundImage")));
             this.panel7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel7.Location = new System.Drawing.Point(0, 0);
@@ -569,9 +570,9 @@
             this.panel42.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.panel42.Controls.Add(this.CodeEditorCtrl);
             this.panel42.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel42.Location = new System.Drawing.Point(0, 35);
+            this.panel42.Location = new System.Drawing.Point(0, 38);
             this.panel42.Name = "panel42";
-            this.panel42.Size = new System.Drawing.Size(1175, 658);
+            this.panel42.Size = new System.Drawing.Size(1175, 655);
             this.panel42.TabIndex = 1;
             // 
             // CodeEditorCtrl
@@ -579,7 +580,7 @@
             this.CodeEditorCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CodeEditorCtrl.Location = new System.Drawing.Point(0, 0);
             this.CodeEditorCtrl.Name = "CodeEditorCtrl";
-            this.CodeEditorCtrl.Size = new System.Drawing.Size(1175, 658);
+            this.CodeEditorCtrl.Size = new System.Drawing.Size(1175, 655);
             this.CodeEditorCtrl.TabIndex = 0;
             // 
             // panel43
@@ -589,7 +590,7 @@
             this.panel43.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel43.Location = new System.Drawing.Point(0, 0);
             this.panel43.Name = "panel43";
-            this.panel43.Size = new System.Drawing.Size(1175, 35);
+            this.panel43.Size = new System.Drawing.Size(1175, 38);
             this.panel43.TabIndex = 0;
             // 
             // label7
@@ -608,7 +609,7 @@
             this.panel44.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.panel44.Controls.Add(this.panel45);
             this.panel44.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel44.Location = new System.Drawing.Point(0, 30);
+            this.panel44.Location = new System.Drawing.Point(0, 33);
             this.panel44.Name = "panel44";
             this.panel44.Size = new System.Drawing.Size(1175, 5);
             this.panel44.TabIndex = 1;
@@ -984,9 +985,9 @@
             this.panel50.Controls.Add(this.TextTab);
             this.panel50.Controls.Add(this.DataTab);
             this.panel50.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel50.Location = new System.Drawing.Point(0, 35);
+            this.panel50.Location = new System.Drawing.Point(0, 38);
             this.panel50.Name = "panel50";
-            this.panel50.Size = new System.Drawing.Size(430, 858);
+            this.panel50.Size = new System.Drawing.Size(430, 855);
             this.panel50.TabIndex = 1;
             // 
             // RegisterTab
@@ -994,7 +995,7 @@
             this.RegisterTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RegisterTab.Location = new System.Drawing.Point(0, 0);
             this.RegisterTab.Name = "RegisterTab";
-            this.RegisterTab.Size = new System.Drawing.Size(430, 858);
+            this.RegisterTab.Size = new System.Drawing.Size(430, 855);
             this.RegisterTab.TabIndex = 2;
             // 
             // TextTab
@@ -1002,7 +1003,7 @@
             this.TextTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TextTab.Location = new System.Drawing.Point(0, 0);
             this.TextTab.Name = "TextTab";
-            this.TextTab.Size = new System.Drawing.Size(430, 858);
+            this.TextTab.Size = new System.Drawing.Size(430, 855);
             this.TextTab.TabIndex = 1;
             // 
             // DataTab
@@ -1010,7 +1011,7 @@
             this.DataTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataTab.Location = new System.Drawing.Point(0, 0);
             this.DataTab.Name = "DataTab";
-            this.DataTab.Size = new System.Drawing.Size(430, 858);
+            this.DataTab.Size = new System.Drawing.Size(430, 855);
             this.DataTab.TabIndex = 0;
             // 
             // panel51
@@ -1021,7 +1022,7 @@
             this.panel51.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel51.Location = new System.Drawing.Point(0, 0);
             this.panel51.Name = "panel51";
-            this.panel51.Size = new System.Drawing.Size(430, 35);
+            this.panel51.Size = new System.Drawing.Size(430, 38);
             this.panel51.TabIndex = 0;
             // 
             // panel53
@@ -1031,21 +1032,22 @@
             this.panel53.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel53.Location = new System.Drawing.Point(208, 0);
             this.panel53.Name = "panel53";
-            this.panel53.Size = new System.Drawing.Size(104, 35);
+            this.panel53.Size = new System.Drawing.Size(104, 38);
             this.panel53.TabIndex = 2;
             // 
             // TextSGTabBtn
             // 
             this.TextSGTabBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.TextSGTabBtn.Dock = System.Windows.Forms.DockStyle.Left;
+            this.TextSGTabBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TextSGTabBtn.FlatAppearance.BorderSize = 0;
             this.TextSGTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TextSGTabBtn.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Bold);
             this.TextSGTabBtn.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.TextSGTabBtn.Location = new System.Drawing.Point(0, 0);
             this.TextSGTabBtn.Name = "TextSGTabBtn";
-            this.TextSGTabBtn.Size = new System.Drawing.Size(104, 30);
+            this.TextSGTabBtn.Size = new System.Drawing.Size(104, 33);
             this.TextSGTabBtn.TabIndex = 6;
+            this.TextSGTabBtn.TabStop = false;
             this.TextSGTabBtn.Text = "Text";
             this.TextSGTabBtn.UseVisualStyleBackColor = false;
             this.TextSGTabBtn.Click += new System.EventHandler(this.TextSGTabBtn_Click);
@@ -1054,7 +1056,7 @@
             // 
             this.TextTabPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.TextTabPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.TextTabPanel.Location = new System.Drawing.Point(0, 30);
+            this.TextTabPanel.Location = new System.Drawing.Point(0, 33);
             this.TextTabPanel.Name = "TextTabPanel";
             this.TextTabPanel.Size = new System.Drawing.Size(104, 5);
             this.TextTabPanel.TabIndex = 1;
@@ -1066,21 +1068,22 @@
             this.panel36.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel36.Location = new System.Drawing.Point(104, 0);
             this.panel36.Name = "panel36";
-            this.panel36.Size = new System.Drawing.Size(104, 35);
+            this.panel36.Size = new System.Drawing.Size(104, 38);
             this.panel36.TabIndex = 1;
             // 
             // DataSGTabBtn
             // 
             this.DataSGTabBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.DataSGTabBtn.Dock = System.Windows.Forms.DockStyle.Left;
+            this.DataSGTabBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataSGTabBtn.FlatAppearance.BorderSize = 0;
             this.DataSGTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DataSGTabBtn.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Bold);
             this.DataSGTabBtn.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.DataSGTabBtn.Location = new System.Drawing.Point(0, 0);
             this.DataSGTabBtn.Name = "DataSGTabBtn";
-            this.DataSGTabBtn.Size = new System.Drawing.Size(112, 30);
+            this.DataSGTabBtn.Size = new System.Drawing.Size(104, 33);
             this.DataSGTabBtn.TabIndex = 6;
+            this.DataSGTabBtn.TabStop = false;
             this.DataSGTabBtn.Text = "Data";
             this.DataSGTabBtn.UseVisualStyleBackColor = false;
             this.DataSGTabBtn.Click += new System.EventHandler(this.DataSGTabBtn_Click);
@@ -1089,7 +1092,7 @@
             // 
             this.DataTabPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.DataTabPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.DataTabPanel.Location = new System.Drawing.Point(0, 30);
+            this.DataTabPanel.Location = new System.Drawing.Point(0, 33);
             this.DataTabPanel.Name = "DataTabPanel";
             this.DataTabPanel.Size = new System.Drawing.Size(104, 5);
             this.DataTabPanel.TabIndex = 1;
@@ -1101,21 +1104,22 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(104, 35);
+            this.panel4.Size = new System.Drawing.Size(104, 38);
             this.panel4.TabIndex = 0;
             // 
             // RegisterSGTabBtn
             // 
             this.RegisterSGTabBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.RegisterSGTabBtn.Dock = System.Windows.Forms.DockStyle.Left;
+            this.RegisterSGTabBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RegisterSGTabBtn.FlatAppearance.BorderSize = 0;
             this.RegisterSGTabBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RegisterSGTabBtn.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Bold);
             this.RegisterSGTabBtn.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.RegisterSGTabBtn.Location = new System.Drawing.Point(0, 0);
             this.RegisterSGTabBtn.Name = "RegisterSGTabBtn";
-            this.RegisterSGTabBtn.Size = new System.Drawing.Size(112, 30);
+            this.RegisterSGTabBtn.Size = new System.Drawing.Size(104, 33);
             this.RegisterSGTabBtn.TabIndex = 6;
+            this.RegisterSGTabBtn.TabStop = false;
             this.RegisterSGTabBtn.Text = "Register";
             this.RegisterSGTabBtn.UseVisualStyleBackColor = false;
             this.RegisterSGTabBtn.Click += new System.EventHandler(this.RegisterSGTabBtn_Click);
@@ -1124,7 +1128,7 @@
             // 
             this.RegisterTabPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(188)))), ((int)(((byte)(0)))));
             this.RegisterTabPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.RegisterTabPanel.Location = new System.Drawing.Point(0, 30);
+            this.RegisterTabPanel.Location = new System.Drawing.Point(0, 33);
             this.RegisterTabPanel.Name = "RegisterTabPanel";
             this.RegisterTabPanel.Size = new System.Drawing.Size(104, 5);
             this.RegisterTabPanel.TabIndex = 1;

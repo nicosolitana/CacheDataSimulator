@@ -11,9 +11,11 @@ namespace CacheDataSimulator.Validation
     class ValidateTextSegment
     {
         private static List<string> rgList = new List<string>();
+        private static List<DataSegment> dxSG;
 
-        public static List<string> ValidateTS(List<string> code, out string err, out List<TextSegment> txSegment)
+        public static List<string> ValidateTS(List<DataSegment> dataSG, List<string> code, out string err, out List<TextSegment> txSegment)
         {
+            dxSG = dataSG;
             err = string.Empty;
             string msg = string.Empty;
             List<string> txCode = DataCleaner.ExtractSegment(code, ".text", string.Empty);
@@ -79,21 +81,51 @@ namespace CacheDataSimulator.Validation
                 if (x == 0)
                     paramObj.RDestination = DataCleaner.PadHexValue(5,prms[x]);
 
+                
                 if (x == 1)
                 {
                     if (!prms[x].StartsWith("Imm_"))
+                    {
                         paramObj.RSourceOne = DataCleaner.PadHexValue(5, prms[x]);
+                    } else
+                    {
+                        string varName = prms[x].Replace("Imm_", "");
+                        int index = dxSG.FindIndex(p => p.Name.Replace(":","") == varName);
+                        if (index > -1)
+                        {
+                            paramObj.Immediate = DataCleaner.PadHexValue(12,Converter.ConvertDecToBin(Converter.ConvertHexToDec(dxSG[index].Addr.Replace("0x", ""))));
+                        }
+                    }
                 }
 
                 if (x == 2)
                 {
                     if (!prms[x].StartsWith("Imm_"))
                         paramObj.RSourceTwo = DataCleaner.PadHexValue(5, prms[x]);
+                    else
+                    {
+                        string varName = prms[x].Replace("Imm_", "");
+                        int index = dxSG.FindIndex(p => p.Name.Replace(":", "") == varName);
+                        if (index > -1)
+                        {
+                            paramObj.Immediate = DataCleaner.PadHexValue(12, Converter.ConvertDecToBin(Converter.ConvertHexToDec(dxSG[index].Addr.Replace("0x", ""))));
+                        }
+                    }
                 }
             }
 
-            if (prms[prms.Length-1].StartsWith("Imm_"))
-                paramObj.Immediate = DataCleaner.PadHexValue(12, prms[prms.Length - 1]).Replace("Imm_",""); 
+            if (prms[prms.Length - 1].StartsWith("Imm_"))
+            {
+                string varName = prms[prms.Length - 1].Replace("Imm_", "");
+                int index = dxSG.FindIndex(p => p.Name.Replace(":", "") == varName);
+                if (index > -1)
+                {
+                    paramObj.Immediate = DataCleaner.PadHexValue(12, Converter.ConvertDecToBin(Converter.ConvertHexToDec(dxSG[index].Addr.Replace("0x", ""))));
+                } else
+                {
+                    paramObj.Immediate = DataCleaner.PadHexValue(12, prms[prms.Length - 1]).Replace("Imm_",""); 
+                }
+            }
 
             return paramObj;
         }

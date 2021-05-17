@@ -13,8 +13,8 @@ namespace CacheDataSimulator
     {
         private static bool IsMRU;
         private static bool IsLRU;
-        private DataTable RegisterDT;
         private MainController MainCTRL;
+        private bool IsAssembled = false;
 
         public MainWin()
         {
@@ -122,10 +122,13 @@ namespace CacheDataSimulator
 
         private void RegisterSGTabBtn_Click(object sender, System.EventArgs e)
         {
-            GenerateRegister();
+            RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
             RegisterTab.Show();
             DataTab.Hide();
             TextTab.Hide();
+            RegisterSGTabBtn.FlatAppearance.BorderColor = Color.FromArgb(0, 255, 255, 255);
+            RegisterSGTabBtn.FlatAppearance.BorderSize = 0;
+            RegisterSGTabBtn.NotifyDefault(false);
             RegisterTabPanel.BackColor = ColorTranslator.FromHtml("#94BC00");
             DataTabPanel.BackColor = ColorTranslator.FromHtml("#1A1A1A");
             TextTabPanel.BackColor = ColorTranslator.FromHtml("#1A1A1A");
@@ -203,23 +206,10 @@ namespace CacheDataSimulator
 
         private void Init()
         {
-            GenerateRegister();
+            MainCTRL.GenerateRegister();
+            RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
             IsLRU = true;
             StaticData.sysDataLst = FileController.ReadSystemData();
-        }
-
-        private void GenerateRegister()
-        {
-            RegisterDT = new DataTable();
-            RegisterDT.Columns.Add("Name", typeof(string));
-            RegisterDT.Columns.Add("Value", typeof(string));
-
-            for (int i = 0; i < 32; i++)
-            {
-                RegisterDT.Rows.Add("x" + i.ToString(), "0x00000000");
-            }
-
-            RegisterTab.SetTemplateDT(RegisterDT);
         }
 
         private void OpenFileBtn_Click(object sender, System.EventArgs e)
@@ -270,14 +260,17 @@ namespace CacheDataSimulator
                     DataTab.SetTemplateDT(MainCTRL.GenerateDataSGDT());
                     TextTab.SetTemplateDT(MainCTRL.GenerateTextSGDT());
                     TextTab.SetColumnWidth();
+                    IsAssembled = true;
                 }
                 else
                 {
                     UpdateErrorLog(err);
+                    IsAssembled = false;
                 }
             }
             catch (Exception ex)
             {
+                IsAssembled = false;
                 MessageBox.Show(ex.Message);
             }
         }
@@ -288,6 +281,25 @@ namespace CacheDataSimulator
                 + errorMsg + "\r\n";
             ErrorLogTxt.SelectionStart = ErrorLogTxt.Text.Length;
             ErrorLogTxt.ScrollToCaret();
+        }
+
+        private void SingleStepBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (IsAssembled)
+                {
+                    foreach (var code in MainCTRL.txSG)
+                    {
+                        MainCTRL.rxSG = OperationController.ExecuteOperation(code, MainCTRL.dxSG, MainCTRL.rxSG);
+                        RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

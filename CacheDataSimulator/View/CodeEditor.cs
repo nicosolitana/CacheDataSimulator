@@ -34,6 +34,9 @@ namespace CacheDataSimulator.View
         {
             InitializeComponent();
         }
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+
+        public static extern bool LockWindowUpdate(IntPtr hWndLock);
 
         public void SetCodeEditorRTB(string code)
         {
@@ -46,36 +49,53 @@ namespace CacheDataSimulator.View
 
         private void CodeEditRTB_TextChanged(object sender, EventArgs e)
         {
-            string[] arr = GetWords(CodeEditRTB.Text, @"\.(\S+)");
-            foreach (var s in arr)
+            try
             {
-                this.CheckKeyword(s, Color.Aquamarine, 0);
-            }
-
-            arr = GetWords(CodeEditRTB.Text, @"\#\s*(\S+(?:(?!\n)\s)*)*");
-            foreach (var s in arr)
-            {
-                this.CheckKeyword(s, Color.LightGreen, 0);
-            }
-
-            foreach (var s in StaticData.sysDataLst)
-            {
-                foreach (var op in s.OpList)
+                LockWindowUpdate(CodeEditRTB.Handle);
+                
+                string[] arr = GetWords(CodeEditRTB.Text, @"\.(\S+)");
+                foreach (var s in arr)
                 {
-                    this.CheckKeyword(op.ToLower(), Color.Khaki, 0);
+                    this.CheckKeyword(s, ColorTranslator.FromHtml("#f1c40f"), 0);
                 }
-            }
 
-            foreach (var s in StaticData.sysDataLst)
-            {
-                foreach (var op in s.OpList)
+                // Comment
+                arr = GetWords(CodeEditRTB.Text, @"\#\s*(\S+(?:(?!\n)\s)*)*");
+                foreach (var s in arr)
                 {
-                    this.CheckKeyword(op.ToUpper(), Color.Khaki, 0);
+                    this.CheckKeyword(s, ColorTranslator.FromHtml("#2ecc71"), 0);
                 }
-            }
 
-            int numLines = CodeEditRTB.Text.Count(c => c.Equals('\n')) + 1;
-            AddLabel(numLines);
+                // Labels and Variables
+                arr = GetWords(CodeEditRTB.Text, @"[A-Za-z0-9]+\:");
+                foreach (var s in arr)
+                {
+                    this.CheckKeyword(s, ColorTranslator.FromHtml("#3498db"), 0);
+                }
+
+                foreach (var s in StaticData.sysDataLst)
+                {
+                    foreach (var op in s.OpList)
+                    {
+                        this.CheckKeyword(op.ToLower(), ColorTranslator.FromHtml("#9b59b6"), 0);
+                    }
+                }
+
+                foreach (var s in StaticData.sysDataLst)
+                {
+                    foreach (var op in s.OpList)
+                    {
+                        this.CheckKeyword(op.ToUpper(), ColorTranslator.FromHtml("#9b59b6"), 0);
+                    }
+                }
+
+                int numLines = CodeEditRTB.Text.Count(c => c.Equals('\n')) + 1;
+                AddLabel(numLines);
+            }
+            finally
+            {
+                LockWindowUpdate(IntPtr.Zero);
+            }
         }
 
         private void CheckKeyword(string word, Color color, int startIndex)
@@ -90,11 +110,12 @@ namespace CacheDataSimulator.View
                     this.CodeEditRTB.Select((index + startIndex), word.Length);
                     this.CodeEditRTB.SelectionColor = color;
                     this.CodeEditRTB.Select(selectStart, 0);
-                    this.CodeEditRTB.SelectionColor = Color.Silver;
+                    this.CodeEditRTB.SelectionColor = ColorTranslator.FromHtml("#ecf0f1");
                 }
             }
         }
-        
+
+
         private string[] GetWords(string input, string format)
         {
             var arr = Regex.Matches(input, format)

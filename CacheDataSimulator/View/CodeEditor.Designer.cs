@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.CodeEditRTB = new System.Windows.Forms.RichTextBox();
-            this.LineNumberRTB = new System.Windows.Forms.RichTextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.splitter1 = new System.Windows.Forms.Splitter();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.CodeEditRTB = new System.Windows.Forms.RichTextBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.LineNumberRTB = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -50,36 +50,38 @@
             this.panel1.Size = new System.Drawing.Size(1244, 758);
             this.panel1.TabIndex = 0;
             // 
+            // splitter1
+            // 
+            this.splitter1.Location = new System.Drawing.Point(35, 0);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(3, 758);
+            this.splitter1.TabIndex = 5;
+            this.splitter1.TabStop = false;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.CodeEditRTB);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(35, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1209, 758);
+            this.panel3.TabIndex = 4;
+            // 
             // CodeEditRTB
             // 
             this.CodeEditRTB.AcceptsTab = true;
             this.CodeEditRTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.CodeEditRTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CodeEditRTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CodeEditRTB.Font = new System.Drawing.Font("Consolas", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CodeEditRTB.Font = new System.Drawing.Font("Courier New", 10.15F);
             this.CodeEditRTB.ForeColor = System.Drawing.SystemColors.Window;
             this.CodeEditRTB.Location = new System.Drawing.Point(0, 0);
             this.CodeEditRTB.Name = "CodeEditRTB";
             this.CodeEditRTB.Size = new System.Drawing.Size(1209, 758);
             this.CodeEditRTB.TabIndex = 2;
-            this.CodeEditRTB.Text = "# Write your code here";
+            this.CodeEditRTB.Text = "";
             this.CodeEditRTB.VScroll += new System.EventHandler(this.CodeEditRTB_VScroll);
             this.CodeEditRTB.TextChanged += new System.EventHandler(this.CodeEditRTB_TextChanged);
-            // 
-            // LineNumberRTB
-            // 
-            this.LineNumberRTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.LineNumberRTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LineNumberRTB.Dock = System.Windows.Forms.DockStyle.Right;
-            this.LineNumberRTB.Font = new System.Drawing.Font("Consolas", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LineNumberRTB.ForeColor = System.Drawing.SystemColors.Window;
-            this.LineNumberRTB.Location = new System.Drawing.Point(7, 0);
-            this.LineNumberRTB.Name = "LineNumberRTB";
-            this.LineNumberRTB.ReadOnly = true;
-            this.LineNumberRTB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.LineNumberRTB.Size = new System.Drawing.Size(28, 758);
-            this.LineNumberRTB.TabIndex = 0;
-            this.LineNumberRTB.Text = "1";
             // 
             // panel2
             // 
@@ -91,22 +93,20 @@
             this.panel2.Size = new System.Drawing.Size(35, 758);
             this.panel2.TabIndex = 3;
             // 
-            // panel3
+            // LineNumberRTB
             // 
-            this.panel3.Controls.Add(this.CodeEditRTB);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(35, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1209, 758);
-            this.panel3.TabIndex = 4;
-            // 
-            // splitter1
-            // 
-            this.splitter1.Location = new System.Drawing.Point(35, 0);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 758);
-            this.splitter1.TabIndex = 5;
-            this.splitter1.TabStop = false;
+            this.LineNumberRTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.LineNumberRTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.LineNumberRTB.Dock = System.Windows.Forms.DockStyle.Right;
+            this.LineNumberRTB.Font = new System.Drawing.Font("Courier New", 10.15F);
+            this.LineNumberRTB.ForeColor = System.Drawing.SystemColors.Window;
+            this.LineNumberRTB.Location = new System.Drawing.Point(7, 0);
+            this.LineNumberRTB.Name = "LineNumberRTB";
+            this.LineNumberRTB.ReadOnly = true;
+            this.LineNumberRTB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.LineNumberRTB.Size = new System.Drawing.Size(28, 758);
+            this.LineNumberRTB.TabIndex = 0;
+            this.LineNumberRTB.Text = "1";
             // 
             // CodeEditor
             // 
@@ -116,8 +116,8 @@
             this.Name = "CodeEditor";
             this.Size = new System.Drawing.Size(1244, 758);
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
