@@ -80,6 +80,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\ErrorLog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\ErrorLog.Designer.cs">
+      <DependentUpon>ErrorLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +108,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\ErrorLog.resx">
+      <DependentUpon>ErrorLog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\MainWin.resx">
       <DependentUpon>MainWin.cs</DependentUpon>
     </EmbeddedResource>

@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWin));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel13 = new System.Windows.Forms.Panel();
@@ -66,14 +66,12 @@
             this.panel18 = new System.Windows.Forms.Panel();
             this.panel41 = new System.Windows.Forms.Panel();
             this.panel42 = new System.Windows.Forms.Panel();
-            this.CodeEditorCtrl = new CacheDataSimulator.View.CodeEditor();
             this.panel43 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.panel44 = new System.Windows.Forms.Panel();
             this.panel45 = new System.Windows.Forms.Panel();
             this.panel26 = new System.Windows.Forms.Panel();
             this.panel35 = new System.Windows.Forms.Panel();
-            this.ErrorLogTxt = new System.Windows.Forms.TextBox();
             this.panel37 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.panel38 = new System.Windows.Forms.Panel();
@@ -102,9 +100,6 @@
             this.panel48 = new System.Windows.Forms.Panel();
             this.panel49 = new System.Windows.Forms.Panel();
             this.panel50 = new System.Windows.Forms.Panel();
-            this.RegisterTab = new CacheDataSimulator.View.CustomTab();
-            this.TextTab = new CacheDataSimulator.View.CustomTab();
-            this.DataTab = new CacheDataSimulator.View.CustomTab();
             this.panel51 = new System.Windows.Forms.Panel();
             this.panel53 = new System.Windows.Forms.Panel();
             this.TextSGTabBtn = new System.Windows.Forms.Button();
@@ -131,6 +126,11 @@
             this.button1 = new System.Windows.Forms.Button();
             this.panel46 = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.CodeEditorCtrl = new CacheDataSimulator.View.CodeEditor();
+            this.ErrLog = new CacheDataSimulator.View.ErrorLog();
+            this.RegisterTab = new CacheDataSimulator.View.CustomTab();
+            this.TextTab = new CacheDataSimulator.View.CustomTab();
+            this.DataTab = new CacheDataSimulator.View.CustomTab();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel13.SuspendLayout();
@@ -604,14 +604,6 @@
             this.panel42.Size = new System.Drawing.Size(1175, 655);
             this.panel42.TabIndex = 1;
             // 
-            // CodeEditorCtrl
-            // 
-            this.CodeEditorCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CodeEditorCtrl.Location = new System.Drawing.Point(0, 0);
-            this.CodeEditorCtrl.Name = "CodeEditorCtrl";
-            this.CodeEditorCtrl.Size = new System.Drawing.Size(1175, 655);
-            this.CodeEditorCtrl.TabIndex = 0;
-            // 
             // panel43
             // 
             this.panel43.Controls.Add(this.label7);
@@ -665,26 +657,12 @@
             // panel35
             // 
             this.panel35.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.panel35.Controls.Add(this.ErrorLogTxt);
+            this.panel35.Controls.Add(this.ErrLog);
             this.panel35.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel35.Location = new System.Drawing.Point(0, 35);
             this.panel35.Name = "panel35";
             this.panel35.Size = new System.Drawing.Size(1175, 165);
             this.panel35.TabIndex = 1;
-            // 
-            // ErrorLogTxt
-            // 
-            this.ErrorLogTxt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.ErrorLogTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ErrorLogTxt.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ErrorLogTxt.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ErrorLogTxt.ForeColor = System.Drawing.Color.LightGray;
-            this.ErrorLogTxt.Location = new System.Drawing.Point(0, 0);
-            this.ErrorLogTxt.Multiline = true;
-            this.ErrorLogTxt.Name = "ErrorLogTxt";
-            this.ErrorLogTxt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ErrorLogTxt.Size = new System.Drawing.Size(1175, 165);
-            this.ErrorLogTxt.TabIndex = 0;
             // 
             // panel37
             // 
@@ -872,27 +850,27 @@
             this.cacheMemDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.cacheMemDataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.cacheMemDataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(188)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.cacheMemDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(188)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.cacheMemDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.cacheMemDataGrid.ColumnHeadersHeight = 35;
             this.cacheMemDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.cacheMemDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.cacheTag,
             this.cacheWord});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(188)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.cacheMemDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(188)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.cacheMemDataGrid.DefaultCellStyle = dataGridViewCellStyle8;
             this.cacheMemDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cacheMemDataGrid.EnableHeadersVisualStyles = false;
             this.cacheMemDataGrid.GridColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -901,13 +879,13 @@
             this.cacheMemDataGrid.RowHeadersVisible = false;
             this.cacheMemDataGrid.RowHeadersWidth = 50;
             this.cacheMemDataGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(188)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
-            this.cacheMemDataGrid.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(188)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.White;
+            this.cacheMemDataGrid.RowsDefaultCellStyle = dataGridViewCellStyle9;
             this.cacheMemDataGrid.RowTemplate.Height = 24;
             this.cacheMemDataGrid.Size = new System.Drawing.Size(315, 855);
             this.cacheMemDataGrid.TabIndex = 6;
@@ -1018,30 +996,6 @@
             this.panel50.Name = "panel50";
             this.panel50.Size = new System.Drawing.Size(430, 855);
             this.panel50.TabIndex = 1;
-            // 
-            // RegisterTab
-            // 
-            this.RegisterTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RegisterTab.Location = new System.Drawing.Point(0, 0);
-            this.RegisterTab.Name = "RegisterTab";
-            this.RegisterTab.Size = new System.Drawing.Size(430, 855);
-            this.RegisterTab.TabIndex = 2;
-            // 
-            // TextTab
-            // 
-            this.TextTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TextTab.Location = new System.Drawing.Point(0, 0);
-            this.TextTab.Name = "TextTab";
-            this.TextTab.Size = new System.Drawing.Size(430, 855);
-            this.TextTab.TabIndex = 1;
-            // 
-            // DataTab
-            // 
-            this.DataTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataTab.Location = new System.Drawing.Point(0, 0);
-            this.DataTab.Name = "DataTab";
-            this.DataTab.Size = new System.Drawing.Size(430, 855);
-            this.DataTab.TabIndex = 0;
             // 
             // panel51
             // 
@@ -1319,6 +1273,46 @@
             this.panel46.Size = new System.Drawing.Size(113, 5);
             this.panel46.TabIndex = 1;
             // 
+            // CodeEditorCtrl
+            // 
+            this.CodeEditorCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CodeEditorCtrl.Location = new System.Drawing.Point(0, 0);
+            this.CodeEditorCtrl.Name = "CodeEditorCtrl";
+            this.CodeEditorCtrl.Size = new System.Drawing.Size(1175, 655);
+            this.CodeEditorCtrl.TabIndex = 0;
+            // 
+            // ErrLog
+            // 
+            this.ErrLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ErrLog.Location = new System.Drawing.Point(0, 0);
+            this.ErrLog.Name = "ErrLog";
+            this.ErrLog.Size = new System.Drawing.Size(1175, 165);
+            this.ErrLog.TabIndex = 1;
+            // 
+            // RegisterTab
+            // 
+            this.RegisterTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RegisterTab.Location = new System.Drawing.Point(0, 0);
+            this.RegisterTab.Name = "RegisterTab";
+            this.RegisterTab.Size = new System.Drawing.Size(430, 855);
+            this.RegisterTab.TabIndex = 2;
+            // 
+            // TextTab
+            // 
+            this.TextTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TextTab.Location = new System.Drawing.Point(0, 0);
+            this.TextTab.Name = "TextTab";
+            this.TextTab.Size = new System.Drawing.Size(430, 855);
+            this.TextTab.TabIndex = 1;
+            // 
+            // DataTab
+            // 
+            this.DataTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataTab.Location = new System.Drawing.Point(0, 0);
+            this.DataTab.Name = "DataTab";
+            this.DataTab.Size = new System.Drawing.Size(430, 855);
+            this.DataTab.TabIndex = 0;
+            // 
             // MainWin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1351,7 +1345,6 @@
             this.panel44.ResumeLayout(false);
             this.panel26.ResumeLayout(false);
             this.panel35.ResumeLayout(false);
-            this.panel35.PerformLayout();
             this.panel37.ResumeLayout(false);
             this.panel37.PerformLayout();
             this.panel38.ResumeLayout(false);
@@ -1472,7 +1465,6 @@
         private System.Windows.Forms.Panel panel45;
         private System.Windows.Forms.Panel panel26;
         private System.Windows.Forms.Panel panel35;
-        private System.Windows.Forms.TextBox ErrorLogTxt;
         private System.Windows.Forms.Panel panel37;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel38;
@@ -1499,6 +1491,7 @@
         private System.Windows.Forms.Panel RegisterTabPanel;
         private System.Windows.Forms.Button ClearRegisterBtn;
         private System.Windows.Forms.ToolTip toolTip1;
+        private View.ErrorLog ErrLog;
         //private View.CodeEditor CodeEditorCtrl;
     }
 }

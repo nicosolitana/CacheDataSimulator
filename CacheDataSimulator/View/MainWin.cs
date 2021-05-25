@@ -274,6 +274,7 @@ namespace CacheDataSimulator
         {
             try
             {
+                UpdateErrorLog(ValidateInput.AssembleMsg());
                 //string err = MainCTRL.BuildSourceCode(BlockSizeTxt.Text, CacheSizeTxt.Text, 
                 //    CodeEditorTxt.Text, IsMRU, IsLRU);
                 string err = MainCTRL.BuildSourceCode(BlockSizeTxt.Text, CacheSizeTxt.Text,
@@ -302,10 +303,11 @@ namespace CacheDataSimulator
 
         private void UpdateErrorLog(string errorMsg)
         {
-            ErrorLogTxt.Text = ErrorLogTxt.Text
-                + errorMsg + "\r\n";
-            ErrorLogTxt.SelectionStart = ErrorLogTxt.Text.Length;
-            ErrorLogTxt.ScrollToCaret();
+            //ErrorLogTxt.Text = ErrorLogTxt.Text
+            //    + errorMsg + "\r\n";
+            ErrLog.SetErrMsg(errorMsg + "\r\n");
+            //ErrorLogTxt.SelectionStart = ErrorLogTxt.Text.Length;
+            //ErrorLogTxt.ScrollToCaret();
         }
 
         private void SingleStepBtn_Click(object sender, EventArgs e)
@@ -323,6 +325,9 @@ namespace CacheDataSimulator
                         RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
                         TextTab.SetSelectedRow(tx.Address, "TextSegment");
                         TextSGTabBtn_Click(sender, e);
+                    } else
+                    {
+                        UpdateErrorLog(ValidateInput.ExecuteMsg());
                     }
                 }
             }

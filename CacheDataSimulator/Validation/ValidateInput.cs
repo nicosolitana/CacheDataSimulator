@@ -54,18 +54,21 @@ namespace CacheDataSimulator.Validation
         public static string NoErr()
         {
             string err = string.Empty;
-            err += "======================================================" + "\r\n";
-            err += "The code has been built successfully with no errors!" + "\r\n";
-            err += "======================================================" + "\r\n";
+            err += "\r\n" + "SUCCESS: The code has been built successfully with no errors." + "\r\n";
             return err;
         }
 
         public static string ExecuteMsg()
         {
             string err = string.Empty;
-            err += "======================================================" + "\r\n";
-            err += "          Code Execution has been completed!" + "\r\n";
-            err += "======================================================" + "\r\n";
+            err += "\r\n" + "SUCCESS: Code Execution has been completed." + "\r\n";
+            return err;
+        }
+
+        public static string AssembleMsg()
+        {
+            string err = string.Empty;
+            err += "\r\n" + "ASSEMBLE: Source code is being assembled!" + "\r\n";
             return err;
         }
 

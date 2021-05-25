@@ -37,15 +37,18 @@ namespace CacheDataSimulator.View
         public void SetRegisterEditable(string variant)
         {
             Type = variant;
+            if(TemplateDG.Columns.Count > 0 )
+            {
                 TemplateDG.Columns[0].ReadOnly = true;
-            if (variant == "Register")
-            {
-                TemplateDG.Columns[1].ReadOnly = false;
-            } else
-            {
-                TemplateDG.Columns[1].ReadOnly = true;
-                if (TemplateDG.Columns.Count > 2)
-                    TemplateDG.Columns[2].ReadOnly = true;
+                if (variant == "Register")
+                {
+                    TemplateDG.Columns[1].ReadOnly = false;
+                } else
+                {
+                    TemplateDG.Columns[1].ReadOnly = true;
+                    if (TemplateDG.Columns.Count > 2)
+                        TemplateDG.Columns[2].ReadOnly = true;
+                }
             }
         }
 

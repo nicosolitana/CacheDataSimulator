@@ -149,7 +149,7 @@ namespace CacheDataSimulator.Validation
                 errMsg += "ERROR: There are duplicate variable names. " + "\r\n";
 
             if (!string.IsNullOrEmpty(errMsg))
-                errMsg += "Ensure code follows the format [varname: .directive value1, value2, ...]." + "\r\n";
+                errMsg += "FOLLOW: Ensure code follows the format [varname: .directive value1, value2, ...]." + "\r\n";
 
             return cleanedDS;
         }
