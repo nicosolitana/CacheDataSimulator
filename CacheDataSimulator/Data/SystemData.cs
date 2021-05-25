@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CacheDataSimulator.Data
+﻿namespace CacheDataSimulator.Data
 {
     class SystemData
     {
@@ -17,18 +15,31 @@ namespace CacheDataSimulator.Data
             }
         }
 
-        private List<string> _opList;
-        public List<string> OpList
+        private string _operation;
+        public string Operation
         {
             get
             {
-                return _opList;
+                return _operation;
             }
             set
             {
-                _opList = value;
+                _operation = value;
             }
         }
+
+        //private List<string> _opList;
+        //public List<string> OpList
+        //{
+        //    get
+        //    {
+        //        return _opList;
+        //    }
+        //    set
+        //    {
+        //        _opList = value;
+        //    }
+        //}
 
         private string _format;
         public string Format

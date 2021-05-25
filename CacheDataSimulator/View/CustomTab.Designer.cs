@@ -69,7 +69,6 @@
             this.TemplateDG.GridColor = System.Drawing.SystemColors.ControlDarkDark;
             this.TemplateDG.Location = new System.Drawing.Point(0, 0);
             this.TemplateDG.Name = "TemplateDG";
-            this.TemplateDG.ReadOnly = true;
             this.TemplateDG.RowHeadersVisible = false;
             this.TemplateDG.RowHeadersWidth = 50;
             this.TemplateDG.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
@@ -83,6 +82,7 @@
             this.TemplateDG.RowTemplate.Height = 24;
             this.TemplateDG.Size = new System.Drawing.Size(355, 815);
             this.TemplateDG.TabIndex = 7;
+            this.TemplateDG.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.TemplateDG_CellEndEdit);
             // 
             // CustomTab
             // 

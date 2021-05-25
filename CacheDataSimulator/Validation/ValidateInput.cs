@@ -60,5 +60,14 @@ namespace CacheDataSimulator.Validation
             return err;
         }
 
+        public static string ExecuteMsg()
+        {
+            string err = string.Empty;
+            err += "======================================================" + "\r\n";
+            err += "          Code Execution has been completed!" + "\r\n";
+            err += "======================================================" + "\r\n";
+            return err;
+        }
+
     }
 }

@@ -15,11 +15,22 @@ namespace CacheDataSimulator.Controller
 
             if (IsSysData)
             {
-                string[] lines ={   "Register        ADD,SLT,SUB             0000000{2}{1}000{0}0110011",
-                                    "Immediate       ADDI,SLTI               {2}{1}000{0}0000011",
-                                    "Load            LB,LH,LW                {2}{1}000{0}0000011",
-                                    "Store           SB,SH,SW                {3}{2}{1}000{0}0100011",
-                                    "Branch          BEQ,BNE,BLT,BGE         {3}{2}{1}000{0}0100011"  };
+                string[] lines ={
+                    "Load        LB        {2}{1}000{0}0000011",
+                    "Load        LH        {2}{1}001{0}0000011",
+                    "Load        LW        {2}{1}010{0}0000011",
+                    "Immediate   ADDI      {2}{1}000{0}0010011",
+                    "Immediate   SLTI      {2}{1}010{0}0010011",
+                    "Register    ADD       0000000{2}{1}000{0}0110011",
+                    "Register    SLT       0000000{2}{1}010{0}0110011",
+                    "Register    SUB       0100000{2}{1}000{0}0110011",
+                    "Store       SB        {3}{2}{1}000{0}0100011",
+                    "Store       SH        {3}{2}{1}001{0}0100011",
+                    "Store       SW        {3}{2}{1}010{0}0100011",
+                    "Branch      BEQ       {3}{2}{1}000{0}1100011",
+                    "Branch      BNE       {3}{2}{1}001{0}1100011",
+                    "Branch      BLT       {3}{2}{1}100{0}1100011",
+                    "Branch      BGE       {3}{2}{1}101{0}1100011"  };
                 File.WriteAllLines(filePath, lines);
             }
             return null;
@@ -39,10 +50,9 @@ namespace CacheDataSimulator.Controller
                 string[] arr = Regex.Split(data, @"[\s]+");
                 sysDataLst.Add(new SystemData() { 
                     Type = arr[0],
-                    OpList = arr[1].Split(',').ToList<string>(),
+                    Operation = arr[1],
                     Format = arr[2]
                 });
-                //arr[1].Split(',').ToList<string>()
             }
             return sysDataLst;
         }

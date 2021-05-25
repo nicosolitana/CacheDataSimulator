@@ -38,6 +38,8 @@ namespace CacheDataSimulator.Controller
                     string secondImm = string.Empty;
                     if (type == "Store")
                     {
+                        if (tx.Params.Immediate == null)
+                            tx.Params.Immediate = "000000000000";
                         secondImm = tx.Params.Immediate.Substring(0, 7);
                         firstImm = tx.Params.Immediate.Substring(7, 5);
                     } else
@@ -52,6 +54,7 @@ namespace CacheDataSimulator.Controller
 
                         secondImm = imm.Substring(0, 1) + imm.Substring(2, 6);
                         firstImm = imm.Substring(8, 4) + imm.Substring(1, 1);
+                        tx.Params.Immediate = secondImm + firstImm;
                     }
                     opCode = String.Format(format, firstImm, tx.Params.RDestination, tx.Params.RSourceOne, secondImm).Replace(" ", "");
                 }
@@ -65,7 +68,7 @@ namespace CacheDataSimulator.Controller
         {
             foreach (var dir in StaticData.sysDataLst)
             {
-                if (dir.OpList.Contains(directive.ToUpper()))
+                if (dir.Operation == directive.ToUpper())
                 {
                     return dir.Format;
                 }
@@ -77,7 +80,7 @@ namespace CacheDataSimulator.Controller
         {
             foreach (var dir in StaticData.sysDataLst)
             {
-                if (dir.OpList.Contains(directive.ToUpper()))
+                if(dir.Operation == directive.ToUpper())
                 {
                     return dir.Type;
                 }

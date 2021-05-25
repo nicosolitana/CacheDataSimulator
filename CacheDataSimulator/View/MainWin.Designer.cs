@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWin));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -35,6 +36,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel13 = new System.Windows.Forms.Panel();
+            this.ClearRegisterBtn = new System.Windows.Forms.Button();
             this.SaveBtn = new System.Windows.Forms.Button();
             this.SingleStepBtn = new System.Windows.Forms.Button();
             this.FullExecBtn = new System.Windows.Forms.Button();
@@ -128,6 +130,7 @@
             this.panel40 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.panel46 = new System.Windows.Forms.Panel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel13.SuspendLayout();
@@ -199,6 +202,7 @@
             // 
             // panel13
             // 
+            this.panel13.Controls.Add(this.ClearRegisterBtn);
             this.panel13.Controls.Add(this.SaveBtn);
             this.panel13.Controls.Add(this.SingleStepBtn);
             this.panel13.Controls.Add(this.FullExecBtn);
@@ -206,8 +210,26 @@
             this.panel13.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel13.Location = new System.Drawing.Point(1195, 5);
             this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(191, 32);
+            this.panel13.Size = new System.Drawing.Size(255, 32);
             this.panel13.TabIndex = 7;
+            // 
+            // ClearRegisterBtn
+            // 
+            this.ClearRegisterBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.ClearRegisterBtn.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ClearRegisterBtn.FlatAppearance.BorderSize = 0;
+            this.ClearRegisterBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClearRegisterBtn.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ClearRegisterBtn.Image = ((System.Drawing.Image)(resources.GetObject("ClearRegisterBtn.Image")));
+            this.ClearRegisterBtn.Location = new System.Drawing.Point(160, 0);
+            this.ClearRegisterBtn.Name = "ClearRegisterBtn";
+            this.ClearRegisterBtn.Size = new System.Drawing.Size(40, 32);
+            this.ClearRegisterBtn.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.ClearRegisterBtn, "Clear Register");
+            this.ClearRegisterBtn.UseVisualStyleBackColor = false;
+            this.ClearRegisterBtn.Click += new System.EventHandler(this.ClearRegisterBtn_Click);
+            this.ClearRegisterBtn.MouseLeave += new System.EventHandler(this.ClearRegisterBtn_MouseLeave);
+            this.ClearRegisterBtn.MouseHover += new System.EventHandler(this.ClearRegisterBtn_MouseHover);
             // 
             // SaveBtn
             // 
@@ -221,6 +243,7 @@
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(40, 32);
             this.SaveBtn.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.SaveBtn, "Save");
             this.SaveBtn.UseVisualStyleBackColor = false;
             this.SaveBtn.MouseLeave += new System.EventHandler(this.SaveBtn_MouseLeave);
             this.SaveBtn.MouseHover += new System.EventHandler(this.SaveBtn_MouseHover);
@@ -237,6 +260,7 @@
             this.SingleStepBtn.Name = "SingleStepBtn";
             this.SingleStepBtn.Size = new System.Drawing.Size(40, 32);
             this.SingleStepBtn.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.SingleStepBtn, "Single Step Execution");
             this.SingleStepBtn.UseVisualStyleBackColor = false;
             this.SingleStepBtn.Click += new System.EventHandler(this.SingleStepBtn_Click);
             this.SingleStepBtn.MouseLeave += new System.EventHandler(this.SingleStepBtn_MouseLeave);
@@ -254,7 +278,9 @@
             this.FullExecBtn.Name = "FullExecBtn";
             this.FullExecBtn.Size = new System.Drawing.Size(40, 32);
             this.FullExecBtn.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.FullExecBtn, "Full Execution");
             this.FullExecBtn.UseVisualStyleBackColor = false;
+            this.FullExecBtn.Click += new System.EventHandler(this.FullExecBtn_Click);
             this.FullExecBtn.MouseLeave += new System.EventHandler(this.FullExecBtn_MouseLeave);
             this.FullExecBtn.MouseHover += new System.EventHandler(this.FullExecBtn_MouseHover);
             // 
@@ -270,6 +296,7 @@
             this.BuildBtn.Name = "BuildBtn";
             this.BuildBtn.Size = new System.Drawing.Size(40, 32);
             this.BuildBtn.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.BuildBtn, "Assemble");
             this.BuildBtn.UseVisualStyleBackColor = false;
             this.BuildBtn.Click += new System.EventHandler(this.BuildBtn_Click);
             this.BuildBtn.MouseLeave += new System.EventHandler(this.BuildBtn_MouseLeave);
@@ -338,6 +365,7 @@
             this.CacheSizeTxt.Size = new System.Drawing.Size(172, 30);
             this.CacheSizeTxt.TabIndex = 1;
             this.CacheSizeTxt.Text = "Enter Cache Size";
+            this.toolTip1.SetToolTip(this.CacheSizeTxt, "Cache Size");
             this.CacheSizeTxt.Enter += new System.EventHandler(this.CacheSizeTxt_Enter);
             this.CacheSizeTxt.Leave += new System.EventHandler(this.CacheSizeTxt_Leave);
             // 
@@ -362,6 +390,7 @@
             this.BlockSizeTxt.Size = new System.Drawing.Size(172, 30);
             this.BlockSizeTxt.TabIndex = 1;
             this.BlockSizeTxt.Text = "Enter Block Size";
+            this.toolTip1.SetToolTip(this.BlockSizeTxt, "Block Size");
             this.BlockSizeTxt.Enter += new System.EventHandler(this.BlockSizeTxt_Enter);
             this.BlockSizeTxt.Leave += new System.EventHandler(this.BlockSizeTxt_Leave);
             // 
@@ -1468,6 +1497,8 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button RegisterSGTabBtn;
         private System.Windows.Forms.Panel RegisterTabPanel;
+        private System.Windows.Forms.Button ClearRegisterBtn;
+        private System.Windows.Forms.ToolTip toolTip1;
         //private View.CodeEditor CodeEditorCtrl;
     }
 }

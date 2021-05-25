@@ -42,8 +42,8 @@ namespace CacheDataSimulator.Common
 
         public static NUM_TYPES CheckNumberType(string number)
         {
-            if (IsNumType(number, @"\A[0-1]+\Z"))
-                return NUM_TYPES.BIN;
+            //if (IsNumType(number, @"\A[0-1]+\Z"))
+            //    return NUM_TYPES.BIN;
 
             if (IsNumType(number, @"\A[0-9]+\Z"))
                 return NUM_TYPES.DEC;
@@ -70,6 +70,15 @@ namespace CacheDataSimulator.Common
                 tmp = tmp.Replace("Imm_", "");
             int diff = maxLen - tmp.Length;
             return String.Empty.PadRight(diff, '0') + tmp;
+        }
+
+        public static string PadHexLeftValue(int maxLen, string hexValue)
+        {
+            string tmp = hexValue;
+            if (tmp.StartsWith("Imm_"))
+                tmp = tmp.Replace("Imm_", "");
+            int diff = maxLen - tmp.Length;
+            return String.Empty.PadLeft(diff, '0') + tmp;
         }
     }
 }

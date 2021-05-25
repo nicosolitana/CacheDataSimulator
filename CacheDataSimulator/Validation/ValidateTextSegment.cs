@@ -370,7 +370,7 @@ namespace CacheDataSimulator.Validation
         {
             foreach (var dir in StaticData.sysDataLst)
             {
-                if (dir.OpList.Contains(directive.ToUpper()))
+                if (dir.Operation == directive.ToUpper())
                 {
                     int index = StaticData.sysDataLst.IndexOf(dir);
                     if ((StaticData.sysDataLst[index].Type == "Load") ||

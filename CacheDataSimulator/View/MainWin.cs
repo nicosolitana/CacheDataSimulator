@@ -1,9 +1,11 @@
-﻿using CacheDataSimulator.Controller;
+﻿using CacheDataSimulator.Common;
+using CacheDataSimulator.Controller;
 using CacheDataSimulator.Data;
 using CacheDataSimulator.Validation;
 using System;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -110,6 +112,18 @@ namespace CacheDataSimulator
             SaveBtn.Image = Properties.Resources.save;
         }
 
+        private void ClearRegisterBtn_MouseHover(object sender, EventArgs e)
+        {
+            ClearRegisterBtn.BackColor = ColorTranslator.FromHtml("#8EBC00");
+            ClearRegisterBtn.Image = Properties.Resources.b_register;
+        }
+
+        private void ClearRegisterBtn_MouseLeave(object sender, EventArgs e)
+        {
+            ClearRegisterBtn.BackColor = ColorTranslator.FromHtml("#2D2D30");
+            ClearRegisterBtn.Image = Properties.Resources.register;
+        }
+
         private void ExitBtn_MouseHover(object sender, System.EventArgs e)
         {
             ExitBtn.BackColor = Color.Red;
@@ -139,6 +153,7 @@ namespace CacheDataSimulator
             RegisterTab.Hide();
             DataTab.Hide();
             TextTab.Show();
+            TextTab.SetRegisterEditable("Not Register");
             RegisterTabPanel.BackColor = ColorTranslator.FromHtml("#1A1A1A");
             DataTabPanel.BackColor = ColorTranslator.FromHtml("#1A1A1A");
             TextTabPanel.BackColor = ColorTranslator.FromHtml("#94BC00");
@@ -149,6 +164,7 @@ namespace CacheDataSimulator
             RegisterTab.Hide();
             DataTab.Show();
             TextTab.Hide();
+            DataTab.SetRegisterEditable("Not Register");
             RegisterTabPanel.BackColor = ColorTranslator.FromHtml("#1A1A1A");
             DataTabPanel.BackColor = ColorTranslator.FromHtml("#94BC00");
             TextTabPanel.BackColor = ColorTranslator.FromHtml("#1A1A1A");
@@ -204,10 +220,18 @@ namespace CacheDataSimulator
             IsMRU = true;
         }
 
+        private void ClearRegisterBtn_Click(object sender, EventArgs e)
+        {
+            MainCTRL.GenerateRegister();
+            RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
+            RegisterTab.SetRegisterEditable("Register");
+        }
+
         private void Init()
         {
             MainCTRL.GenerateRegister();
             RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
+            RegisterTab.SetRegisterEditable("Register");
             IsLRU = true;
             StaticData.sysDataLst = FileController.ReadSystemData();
         }
@@ -261,6 +285,7 @@ namespace CacheDataSimulator
                     TextTab.SetTemplateDT(MainCTRL.GenerateTextSGDT());
                     TextTab.SetColumnWidth();
                     IsAssembled = true;
+                    OperationController.NextAddr = "0x00001000";
                 }
                 else
                 {
@@ -289,11 +314,41 @@ namespace CacheDataSimulator
             {
                 if (IsAssembled)
                 {
+                    int nextValue = Int32.Parse(Converter.ConvertHexToDec(OperationController.NextAddr.Replace("0x", "")));
+                    int lastAddr = Int32.Parse(Converter.ConvertHexToDec(MainCTRL.txSG[MainCTRL.txSG.Count - 1].Address.Replace("0x", "")));
+                    if(nextValue <= lastAddr)
+                    {
+                        TextSegment tx = MainCTRL.txSG.Where(x => x.Address == OperationController.NextAddr).FirstOrDefault();
+                        MainCTRL.rxSG = OperationController.ExecuteOperation(tx, MainCTRL.dxSG, MainCTRL.rxSG);
+                        RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
+                        TextTab.SetSelectedRow(tx.Address, "TextSegment");
+                        TextSGTabBtn_Click(sender, e);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void FullExecBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (IsAssembled)
+                {
                     foreach (var code in MainCTRL.txSG)
                     {
+                        // Simulator
                         MainCTRL.rxSG = OperationController.ExecuteOperation(code, MainCTRL.dxSG, MainCTRL.rxSG);
                         RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
+
+                        // Cache
+
                     }
+                    //cacheHitRateLbl.Text = CacheController.CacheHitRate();
+                    UpdateErrorLog(ValidateInput.ExecuteMsg());
                 }
             }
             catch (Exception ex)

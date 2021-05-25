@@ -44,6 +44,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WinFormsSyntaxHighlighter">
+      <HintPath>Resources\WinFormsSyntaxHighlighter.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Converter.cs" />
@@ -162,6 +165,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\fas_icon.png" />
+    <None Include="Resources\register.png" />
+    <None Include="Resources\b_register.png" />
     <Content Include="Resources\system_input.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

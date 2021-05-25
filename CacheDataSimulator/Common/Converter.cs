@@ -13,9 +13,15 @@ namespace CacheDataSimulator.Common
         {
             return Convert.ToString(Convert.ToInt64(number, 10), 16).ToUpper();
         }
+
         public static string ConvertHexToDec(string number)
         {
             return Convert.ToString(Convert.ToInt64(number, 16), 10);
+        }
+
+        public static string ConvertBinToDec(string number)
+        {
+            return Convert.ToString(Convert.ToInt64(number, 2), 10);
         }
 
         public static string ConvertHexToBin(string number)

@@ -26,7 +26,7 @@ namespace CacheDataSimulator.Validation
             {
                 ds.Addr = "0x" + DataCleaner.PadHexValue(8,Converter.ConvertDecToHex(i.ToString()));
                 int count = ds.StoredValue.Count;
-                i = i + (4 * count);
+                i = i + count;
             }
             return dataSG;
         }
@@ -42,14 +42,19 @@ namespace CacheDataSimulator.Validation
                 int i = 0;
                 foreach (var value in ds.Value)
                 {
-                    if(i != maxItr)
+                    if (i != maxItr)
                     {
-                        tempVal += DataCleaner.PadHexValue(valueLength, value);
+                        //tempVal += DataCleaner.PadHexValue(valueLength, value);
+                        tempVal = DataCleaner.PadHexValue(valueLength, value) + tempVal;
                         i++;
                     } 
                     
                     if(i == maxItr) {
-                        tempSV.Add("0x" + tempVal);
+                        //var lines = Regex.Matches(tempVal, @"[\s\S]{0,2}").Cast<Match>().Select(x => x.Value).ToList<string>();
+                        //lines.Reverse();
+                        //lines = lines.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+                        //tempSV.Add("0x" + tempVal);
+                        tempSV.AddRange(PartitionToBytes(tempVal, ds.Type.ToLower()));
                         tempVal = string.Empty;
                         i = 0;
                     }
@@ -57,11 +62,47 @@ namespace CacheDataSimulator.Validation
 
                 if (!string.IsNullOrEmpty(tempVal))
                 {
-                    tempSV.Add("0x" + DataCleaner.PadHexValue(8, tempVal));
+                    //tempSV.Add("0x" + DataCleaner.PadHexValue(8, tempVal));
+                    //tempVal = DataCleaner.PadHexLeftValue(8, tempVal);
+                    tempVal = DataCleaner.PadHexValue(8, tempVal);
+                    tempSV.AddRange(PartitionToBytes(tempVal, ds.Type.ToLower()));
                 }
                 ds.StoredValue = tempSV;
             }
             return dataSG;
+        }
+
+        private static List<string> PartitionToBytes(string HexValue, string Type)
+        {
+            if (HexValue.Length < 8)
+                HexValue = DataCleaner.PadHexValue(8, HexValue);
+            var lines = Regex.Matches(HexValue, @"[\s\S]{0,2}").Cast<Match>().Select(x => x.Value).ToList<string>();
+
+            //if(Type == ".word")
+            lines.Reverse();
+
+            if (Type == ".half")
+            {
+                var hlines = Regex.Matches(HexValue, @"[\s\S]{0,4}").Cast<Match>().Select(x => x.Value).ToList<string>();
+                //string fhalf = hlines[0].ToString();
+                var firstHalf = Regex.Matches(hlines[0].ToString(), @"[\s\S]{0,2}").Cast<Match>().Select(x => x.Value).ToList<string>();
+                              //Regex.Matches(HexValue, @"[\s\S]{0,2}").Cast<Match>().Select(x => fhalf).ToList<string>();
+                firstHalf.Reverse();
+                //string shalf = hlines[1].ToString();
+                var secondHalf = Regex.Matches(hlines[1].ToString(), @"[\s\S]{0,2}").Cast<Match>().Select(x => x.Value).ToList<string>();
+                secondHalf.Reverse();
+                lines = secondHalf;
+                lines.AddRange(firstHalf);
+
+            }
+                //lines.Reverse();
+
+            lines = lines.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+            for(int i =0; i < lines.Count; i++)
+            {
+                lines[i] = "0x" + lines[i];
+            }
+            return lines;
         }
 
         private static int CheckMaxValueLength(string type)
@@ -164,14 +205,24 @@ namespace CacheDataSimulator.Validation
             foreach (var sv in storedValue)
             {
                 string tmp = sv;
-                if (tmp.Length > 3)
-                {
-                    if (tmp.Substring(0, 2) == "0x")
-                        tmp = sv.Remove(0, 2);
-                }
+                //if (tmp.Length > 3)
+                //{
+                //    if (tmp.Substring(0, 2) == "0x")
+                //        tmp = sv.Remove(0, 2);
+                //}
+                
+                tmp = tmp.Replace("0x", "");
                 NUM_TYPES type = DataCleaner.CheckNumberType(tmp);
                 if((type == NUM_TYPES.DEC) || (type == NUM_TYPES.HEX) || (type == NUM_TYPES.BIN))
-                    cleanedVal.Add(Converter.ConvertToHex(tmp));
+                {
+                    if (sv.StartsWith("0x"))
+                    {
+                        cleanedVal.Add(tmp);
+                    } else
+                    {
+                        cleanedVal.Add(Converter.ConvertToHex(tmp));
+                    }
+                }
                 else
                     err = " \t- Specified an invalid value (" + tmp + ") that is neither an INT nor HEX." + "\r\n";
             }

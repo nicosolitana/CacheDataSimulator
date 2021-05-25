@@ -84,7 +84,7 @@ namespace CacheDataSimulator.Controller
                 foreach (var value in data.StoredValue)
                 {
                     DataSGDT.Rows.Add(initAddr, data.Name.Remove(data.Name.Length - 1, 1), value);
-                    int addr = Convert.ToInt32(Converter.ConvertHexToDec(initAddr.Remove(0, 2))) + 4;
+                    int addr = Convert.ToInt32(Converter.ConvertHexToDec(initAddr.Remove(0, 2))) + 1;
                     initAddr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertDecToHex(addr.ToString()));
                 }
             }
