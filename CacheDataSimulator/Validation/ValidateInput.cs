@@ -26,14 +26,14 @@ namespace CacheDataSimulator.Validation
             return err;
         }
 
-        public static string IsReplaceAlgoSet(bool mru, bool lru)
-        {
-            string err = string.Empty;
-            if ((!mru) && (!lru))
-                err += "ERROR: Replacement Algorithm is not set." + "\r\n";
+        //public static string IsReplaceAlgoSet(bool mru, bool lru)
+        //{
+        //    string err = string.Empty;
+        //    if ((!mru) && (!lru))
+        //        err += "ERROR: Replacement Algorithm is not set." + "\r\n";
 
-            return err;
-        }
+        //    return err;
+        //}
 
         public static string HasCode(string code)
         {

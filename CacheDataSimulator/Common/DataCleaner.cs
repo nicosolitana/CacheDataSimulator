@@ -14,6 +14,18 @@ namespace CacheDataSimulator.Common
 
     class DataCleaner
     {
+
+        public static int BitCounter(int size)
+        {
+            int i = 0;
+            while (size != 1)
+            {
+                size = size / 2;
+                i++;
+            }
+            return i;
+        }
+
         public static string IsComment(string code)
         {
             var re = new Regex(@"#[A-Za-z0-9\s+(~`!@#$%^*\(\),.|)*]*");

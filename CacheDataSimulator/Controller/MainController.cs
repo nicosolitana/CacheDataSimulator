@@ -14,12 +14,50 @@ namespace CacheDataSimulator.Controller
         public List<TextSegment> txSG;
         public List<DataSegment> dxSG;
         public List<Register> rxSG;
+        public List<Cache> cacheList;
+        public DataTable DataSGDT;
         private DataTable TextSGDT;
-        private DataTable DataSGDT;
         private DataTable RegisterDT;
+        private DataTable CacheDT;
 
         public MainController()
         {
+
+        }
+
+        public List<Cache> InitializeCache(int rowCount, int blockSize)
+        {
+            int wordSize = DataCleaner.BitCounter(blockSize);
+            int mmSize = 11;
+            int tagSize = mmSize - wordSize;
+
+            cacheList = new List<Cache>();
+            for (int i = 0; i < rowCount; i++)
+            {
+                cacheList.Add(new Cache()
+                {
+                    Tag = DataCleaner.PadHexLeftValue(tagSize, ""),
+                    Word = DataCleaner.PadHexLeftValue(wordSize, ""),
+                    Addr = "0",
+                    Value = "0",
+                    Age = 0
+                }); 
+            }
+            return cacheList;
+        }
+
+        public DataTable GenerateCacheDT()
+        {
+            CacheDT = new DataTable();
+            CacheDT.Columns.Add("Tag", typeof(string));
+            CacheDT.Columns.Add("Word", typeof(string));
+            CacheDT.Columns.Add("Data", typeof(string));
+
+            for (int i = 0; i < cacheList.Count; i++)
+            {
+                CacheDT.Rows.Add(cacheList[i].Tag, cacheList[i].Word, cacheList[i].Value);
+            }
+            return CacheDT;
         }
 
         public List<Register> GenerateRegister()
@@ -27,13 +65,15 @@ namespace CacheDataSimulator.Controller
             rxSG = new List<Register>();
             for (int i = 0; i < 32; i++)
             {
-                rxSG.Add(new Register() { 
-                    Name = "x"+ i.ToString(),
+                rxSG.Add(new Register()
+                {
+                    Name = "x" + i.ToString(),
                     Value = "0x00000000"
                 });
             }
             return rxSG;
         }
+
         public DataTable GenerateRegisterSGDT()
         {
             RegisterDT = new DataTable();
@@ -46,8 +86,11 @@ namespace CacheDataSimulator.Controller
             }
             return RegisterDT;
         }
-            // MAIN EVENTS
-        public string BuildSourceCode(string blockSize, string cacheSize, string sourceCode, bool IsMRU, bool IsLRU)
+
+
+        // MAIN EVENTS
+
+        public string BuildSourceCode(string blockSize, string cacheSize, string sourceCode, bool IsMRU)
         {
             string initErr = string.Empty;
             string codeErr = string.Empty;
@@ -59,7 +102,7 @@ namespace CacheDataSimulator.Controller
 
             try
             {
-                initErr = InitValidation(blockSize, cacheSize, sourceCode, IsMRU, IsLRU);
+                initErr = InitValidation(blockSize, cacheSize, sourceCode, IsMRU);
                 codeErr = CodeValidation(code, out dxSG, out txSG);
             }
             catch (Exception e)
@@ -72,6 +115,7 @@ namespace CacheDataSimulator.Controller
         public DataTable GenerateDataSGDT()
         {
             DataSGDT = new DataTable();
+            string initAddr = "0x00000000";
 
             // Create Columns
             DataSGDT.Columns.Add("Address", typeof(string));
@@ -80,13 +124,21 @@ namespace CacheDataSimulator.Controller
 
             foreach (var data in dxSG)
             {
-                string initAddr = data.Addr;
+                initAddr = data.Addr;
                 foreach (var value in data.StoredValue)
                 {
                     DataSGDT.Rows.Add(initAddr, data.Name.Remove(data.Name.Length - 1, 1), value);
                     int addr = Convert.ToInt32(Converter.ConvertHexToDec(initAddr.Remove(0, 2))) + 1;
                     initAddr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertDecToHex(addr.ToString()));
                 }
+            }
+
+            int limit = 2047 - Int32.Parse(Converter.ConvertHexToDec(initAddr.Remove(0, 2)));
+            for (int i=0; i < limit; i++)
+            {
+                int addr = Convert.ToInt32(Converter.ConvertHexToDec(initAddr.Remove(0, 2))) + 1;
+                initAddr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertDecToHex(addr.ToString()));
+                DataSGDT.Rows.Add(initAddr, "", "0x00");
             }
             return DataSGDT;
         }
@@ -109,13 +161,13 @@ namespace CacheDataSimulator.Controller
 
 
         // VALIDATION EVENTS
-        private string InitValidation(string blockSize, string cacheSize, string sourceCode, bool IsMRU, bool IsLRU)
+        private string InitValidation(string blockSize, string cacheSize, string sourceCode, bool IsMRU)
         {
             string err = string.Empty;
             err += ValidateInput.IsBlockCacheSize(blockSize, "Block");
             err += ValidateInput.IsBlockCacheSize(cacheSize, "Cache");
             err += ValidateInput.HasCode(sourceCode);
-            err += ValidateInput.IsReplaceAlgoSet(IsMRU, IsLRU);
+            //err += ValidateInput.IsReplaceAlgoSet(IsMRU);
             return err;
         }
 

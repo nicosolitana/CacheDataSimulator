@@ -21,12 +21,13 @@ namespace CacheDataSimulator.Validation
 
         private static List<DataSegment> SetAddress(List<DataSegment> dataSG)
         {
-            int i = 0;
+            int i = 0, x = 1;
             foreach (var ds in dataSG)
             {
                 ds.Addr = "0x" + DataCleaner.PadHexValue(8,Converter.ConvertDecToHex(i.ToString()));
                 int count = ds.StoredValue.Count;
                 i = i + count;
+                x++;
             }
             return dataSG;
         }

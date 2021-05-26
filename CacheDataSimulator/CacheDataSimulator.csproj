@@ -57,6 +57,7 @@
     <Compile Include="Controller\OpCodeController.cs" />
     <Compile Include="Controller\OperationController.cs" />
     <Compile Include="Controller\Simulator.cs" />
+    <Compile Include="Data\Cache.cs" />
     <Compile Include="Data\DataSegment.cs" />
     <Compile Include="Data\OpParameters.cs" />
     <Compile Include="Data\Register.cs" />

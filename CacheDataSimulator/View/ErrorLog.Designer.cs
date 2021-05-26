@@ -44,6 +44,7 @@
             this.ErrorLogRTB.ForeColor = System.Drawing.Color.LightGray;
             this.ErrorLogRTB.Location = new System.Drawing.Point(0, 0);
             this.ErrorLogRTB.Name = "ErrorLogRTB";
+            this.ErrorLogRTB.ReadOnly = true;
             this.ErrorLogRTB.Size = new System.Drawing.Size(1229, 310);
             this.ErrorLogRTB.TabIndex = 0;
             this.ErrorLogRTB.Text = "";

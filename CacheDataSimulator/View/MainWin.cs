@@ -3,6 +3,7 @@ using CacheDataSimulator.Controller;
 using CacheDataSimulator.Data;
 using CacheDataSimulator.Validation;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -14,7 +15,6 @@ namespace CacheDataSimulator
     public partial class MainWin : Form
     {
         private static bool IsMRU;
-        private static bool IsLRU;
         private MainController MainCTRL;
         private bool IsAssembled = false;
 
@@ -208,7 +208,6 @@ namespace CacheDataSimulator
         {
             LruBtn.BackColor = ColorTranslator.FromHtml("#8EBC00");
             MruBtn.BackColor = ColorTranslator.FromHtml("#58585A");
-            IsLRU = true;
             IsMRU = false;
         }
 
@@ -216,7 +215,6 @@ namespace CacheDataSimulator
         {
             LruBtn.BackColor = ColorTranslator.FromHtml("#58585A");
             MruBtn.BackColor = ColorTranslator.FromHtml("#8EBC00");
-            IsLRU = false;
             IsMRU = true;
         }
 
@@ -232,7 +230,7 @@ namespace CacheDataSimulator
             MainCTRL.GenerateRegister();
             RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
             RegisterTab.SetRegisterEditable("Register");
-            IsLRU = true;
+            IsMRU = false;
             StaticData.sysDataLst = FileController.ReadSystemData();
         }
 
@@ -270,6 +268,11 @@ namespace CacheDataSimulator
             }
         }
 
+        private void SetCacheDT(DataTable cacheDT)
+        {
+            cacheMemDataGrid.DataSource = cacheDT;
+        }
+
         private void BuildBtn_Click(object sender, System.EventArgs e)
         {
             try
@@ -278,9 +281,24 @@ namespace CacheDataSimulator
                 //string err = MainCTRL.BuildSourceCode(BlockSizeTxt.Text, CacheSizeTxt.Text, 
                 //    CodeEditorTxt.Text, IsMRU, IsLRU);
                 string err = MainCTRL.BuildSourceCode(BlockSizeTxt.Text, CacheSizeTxt.Text,
-                    CodeEditorCtrl.GetCodeEditorRTB(), IsMRU, IsLRU);
+                    CodeEditorCtrl.GetCodeEditorRTB(), IsMRU);
                 if (string.IsNullOrEmpty(err))
                 {
+                    int cacheRowCount = 4 * Int32.Parse(BlockSizeTxt.Text) * Int32.Parse(CacheSizeTxt.Text);
+                    MainCTRL.InitializeCache(cacheRowCount, Int32.Parse(BlockSizeTxt.Text));
+                    SetCacheDT(MainCTRL.GenerateCacheDT());
+                    int wordSize = DataCleaner.BitCounter(Int32.Parse(BlockSizeTxt.Text));
+                    CacheController.Init(11-wordSize, wordSize, Int32.Parse(BlockSizeTxt.Text));
+
+
+
+
+
+
+
+
+
+
                     UpdateErrorLog(ValidateInput.NoErr());
                     DataTab.SetTemplateDT(MainCTRL.GenerateDataSGDT());
                     TextTab.SetTemplateDT(MainCTRL.GenerateTextSGDT());
@@ -325,6 +343,15 @@ namespace CacheDataSimulator
                         RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
                         TextTab.SetSelectedRow(tx.Address, "TextSegment");
                         TextSGTabBtn_Click(sender, e);
+
+
+                        // Cache Simulation
+                        SimulateCache(tx);
+
+                        //MainCTRL.cacheList = CacheController.UpdateCache(tx, MainCTRL.DataSGDT, MainCTRL.cacheList, IsMRU);
+                        //SetCacheDT(MainCTRL.GenerateCacheDT());
+                        //cacheHitLbl.Text = CacheController.CacheHit.ToString();
+                        //cacheMissLbl.Text = CacheController.CacheMiss.ToString();
                     } else
                     {
                         UpdateErrorLog(ValidateInput.ExecuteMsg());
@@ -335,6 +362,14 @@ namespace CacheDataSimulator
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void SimulateCache(TextSegment code)
+        {
+            MainCTRL.cacheList = CacheController.UpdateCache(code, MainCTRL.DataSGDT, MainCTRL.cacheList, IsMRU);
+            SetCacheDT(MainCTRL.GenerateCacheDT());
+            cacheHitLbl.Text = CacheController.CacheHit.ToString();
+            cacheMissLbl.Text = CacheController.CacheMiss.ToString();
         }
 
         private void FullExecBtn_Click(object sender, EventArgs e)
@@ -350,7 +385,11 @@ namespace CacheDataSimulator
                         RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
 
                         // Cache
-
+                        //MainCTRL.cacheList = CacheController.UpdateCache(code, MainCTRL.DataSGDT, MainCTRL.cacheList, IsMRU);
+                        //SetCacheDT(MainCTRL.GenerateCacheDT());
+                        //cacheHitLbl.Text = CacheController.CacheHit.ToString();
+                        //cacheMissLbl.Text = CacheController.CacheMiss.ToString();
+                        SimulateCache(code);
                     }
                     //cacheHitRateLbl.Text = CacheController.CacheHitRate();
                     UpdateErrorLog(ValidateInput.ExecuteMsg());
