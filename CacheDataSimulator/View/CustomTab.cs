@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -52,12 +53,43 @@ namespace CacheDataSimulator.View
             }
         }
 
+        public int SearchRow(string type, string memLoc)
+        {
+            TemplateDG.ClearSelection();
+            int rowIndex = -1;
+            if ((Type == type) 
+                && (!string.IsNullOrEmpty(memLoc))
+                && (memLoc != "Enter Memory Location"))
+            {
+                int memLen = memLoc.Length - 2;
+                string searchItem = "0x" + memLoc.Substring(2, memLen).ToUpper();
+                try
+                {
+                    DataGridViewRow row = TemplateDG.Rows
+                        .Cast<DataGridViewRow>()
+                        .Where(r => r.Cells["Address"].Value.ToString().Equals(searchItem))
+                        .First();
+                    rowIndex = row.Index;
+                    TemplateDG.Rows[rowIndex].Selected = true;
+                    TemplateDG.CurrentCell = TemplateDG.Rows[rowIndex].Cells[0];
+                }
+                catch (Exception)
+                {
+                    return rowIndex;
+                }
+            }
+            return rowIndex;
+        }
+
         public void SetColumnWidth()
         {
             TemplateDG.Columns[0].Width = 100;
             TemplateDG.Columns[1].Width = 100;
             if(TemplateDG.Columns.Count > 2)
+            {
+                TemplateDG.AlternatingRowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 TemplateDG.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
         }
 
         private void TemplateDG_CellEndEdit(object sender, DataGridViewCellEventArgs e)

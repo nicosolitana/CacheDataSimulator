@@ -183,6 +183,45 @@ namespace CacheDataSimulator.Controller
             List<string> txCode = ValidateTextSegment.ValidateTS(dataSG, code, out err, out txSegment);
             msgErr += err;
 
+            List<string> globalLst = new List<string>();
+            foreach (var line in code)
+            {
+                if (line == ".data")
+                    break;
+
+                if ((line.Trim().StartsWith(".globl"))
+                    || (line.Trim().StartsWith(".GLOBL")))
+                {
+                    globalLst.Add(line.Trim().Split(' ')[1] + ":");
+                }
+
+            }
+
+            foreach (var key in globalLst)
+            {
+                bool exists = false;
+                bool start = false;
+                foreach (var line in code)
+                {
+                    if (start)
+                    {
+                        if (line.Contains(key))
+                        {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (line.Contains(".text"))
+                        start = true;
+                }
+
+                if (!exists)
+                {
+                    msgErr += "ERROR: This global label " + key.ToString() + " does not exists. \r\n" + msgErr;
+                }
+            }
+
             return msgErr;
         }
     }

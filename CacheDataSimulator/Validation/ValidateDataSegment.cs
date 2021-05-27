@@ -27,6 +27,55 @@ namespace CacheDataSimulator.Validation
                 ds.Addr = "0x" + DataCleaner.PadHexValue(8,Converter.ConvertDecToHex(i.ToString()));
                 int count = ds.StoredValue.Count;
                 i = i + count;
+
+                if(x < dataSG.Count)
+                {
+                    int remainder = 0;
+                    if (ds.Type.ToLower() == ".byte")
+                    {
+                        if (dataSG[x].Type.ToLower() == ".half")
+                        {
+                            remainder = i % 2;
+                            for (int y = 0; y < remainder; y++)
+                            {
+                                ds.StoredValue.Add("0x00");
+                            }
+                        }
+
+                        if (dataSG[x].Type.ToLower() == ".word")
+                        {
+                            remainder = i % 4;
+                            if(remainder != 0)
+                            {
+                                remainder = 4 - remainder;
+                                for (int y = 0; y < remainder; y++)
+                                {
+                                    ds.StoredValue.Add("0x00");
+                                }
+                            }
+                        }
+                    }
+
+
+                    if (ds.Type.ToLower() == ".half")
+                    {
+                        if (dataSG[x].Type.ToLower() == ".word")
+                        {
+                            remainder = i % 4;
+                            if (remainder != 0)
+                            {
+                                remainder = 4 - remainder;
+                                for (int y = 0; y < remainder; y++)
+                                {
+                                    ds.StoredValue.Add("0x00");
+                                }
+                            }
+                        }
+                    }
+
+                    i = i + remainder;
+                }
+
                 x++;
             }
             return dataSG;
@@ -65,7 +114,7 @@ namespace CacheDataSimulator.Validation
                 {
                     //tempSV.Add("0x" + DataCleaner.PadHexValue(8, tempVal));
                     //tempVal = DataCleaner.PadHexLeftValue(8, tempVal);
-                    tempVal = DataCleaner.PadHexValue(8, tempVal);
+                    //tempVal = DataCleaner.PadHexValue(8, tempVal);
                     tempSV.AddRange(PartitionToBytes(tempVal, ds.Type.ToLower()));
                 }
                 ds.StoredValue = tempSV;
@@ -75,8 +124,8 @@ namespace CacheDataSimulator.Validation
 
         private static List<string> PartitionToBytes(string HexValue, string Type)
         {
-            if (HexValue.Length < 8)
-                HexValue = DataCleaner.PadHexValue(8, HexValue);
+            //if (HexValue.Length < 8)
+            //    HexValue = DataCleaner.PadHexValue(8, HexValue);
             var lines = Regex.Matches(HexValue, @"[\s\S]{0,2}").Cast<Match>().Select(x => x.Value).ToList<string>();
 
             //if(Type == ".word")

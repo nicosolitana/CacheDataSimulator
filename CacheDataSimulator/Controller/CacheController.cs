@@ -1,5 +1,6 @@
 ﻿using CacheDataSimulator.Common;
 using CacheDataSimulator.Data;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace CacheDataSimulator.Controller
 {
     class CacheController
     {
-        public static int CacheHit;
-        public static int CacheMiss;
+        public static double CacheHit;
+        public static double CacheMiss;
         public static int blockSize;
         public static int wordSize;
         public static int tagSize;
@@ -27,7 +28,7 @@ namespace CacheDataSimulator.Controller
         {
             int maxAge = cacheLst.Max(x => x.Age);
             int minAge = cacheLst.Min(x => x.Age);
-            int upperBound = lowerBound + (blockSize * 4);
+            int upperBound = (lowerBound + (blockSize * 4)) - 1;
             int limit = cacheLst.Count / (blockSize * 4);
             int i = 0;
             foreach (var cache in cacheLst)
@@ -38,7 +39,9 @@ namespace CacheDataSimulator.Controller
                     if(cache.Age != 0)
                         cache.Age++;
 
-                    if (cache.Age > limit)
+                    //if(cache.Age == maxAge)
+
+                    if (cache.Age > limit) //&& (maxAge)
                         cache.Age = 1;
                 }
                 i++;
@@ -68,6 +71,7 @@ namespace CacheDataSimulator.Controller
                 string addr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertBinToHex(tx.Params.Immediate));
                 int IsInCache = cacheLst.FindIndex(p => p.Addr == addr);
 
+                int beforeAge = 0, afterAge = 0;
                 if (IsInCache == -1)
                 {
                     CacheMiss++;
@@ -76,9 +80,9 @@ namespace CacheDataSimulator.Controller
                     if (item != 0)
                     {
                         if(IsMRU)
-                            item = cacheLst.Max(x => x.Age);
-                        else
                             item = cacheLst.Min(x => x.Age);
+                        else
+                            item = cacheLst.Max(x => x.Age);
                     }
 
                     IsInCache = cacheLst.FindIndex(p => p.Age == item);
@@ -89,6 +93,8 @@ namespace CacheDataSimulator.Controller
 
                         if ((rowIndex < dxDT.Rows.Count) && (cacheIndex < cacheLst.Count))
                         {
+                            beforeAge = cacheLst[cacheIndex].Age;
+                            afterAge = 1;
                             //cacheLst[cacheIndex].Age++;
                             cacheLst[cacheIndex].Age = 1;
                             cacheLst[cacheIndex].Addr = dxDT.Rows[rowIndex]["Address"].ToString();
@@ -117,6 +123,8 @@ namespace CacheDataSimulator.Controller
                     {
                         if ((i > lLimit) && (i < uLimit))
                         {
+                            beforeAge = cacheLst[cacheIndex].Age;
+                            afterAge = 1;
                             cacheLst[cacheIndex].Age = 1;
                         }
                         //    cacheLst[cacheIndex].Age++;
@@ -124,41 +132,22 @@ namespace CacheDataSimulator.Controller
                     }
                     IsInCache = lLimit;
                 }
-                cacheLst = UpdateCacheAge(cacheLst, IsInCache, blockSize);
+                if(beforeAge != afterAge)
+                    cacheLst = UpdateCacheAge(cacheLst, IsInCache, blockSize);
             }
             return cacheLst;
         }
 
-        void init(bool firstExecution)
-        {
-            if(firstExecution)
-            {
-                CacheHit = 0;
-                CacheMiss = 0;
-            }
-        }
-
-        void CacheSimulation(bool hit)
-        {
-            if (hit)
-                CacheHit++;
-            else
-                CacheMiss++;
-        }
-
-        void ComputeHit()
-        {
-
-        }
-
-        void ComputeCacheMiss()
-        {
-
-        }
-
         public static string CacheHitRate()
         {
-            return (CacheHit / (CacheMiss + CacheHit)).ToString();
+            double rate = CacheHit / (CacheMiss + CacheHit);
+            return Math.Round(rate, 2).ToString();
+        }
+
+        public static string CacheMissRate()
+        {
+            double rate = CacheMiss / (CacheMiss + CacheHit); 
+            return Math.Round(rate, 2).ToString();
         }
     }
 }

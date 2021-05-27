@@ -125,7 +125,8 @@ namespace CacheDataSimulator.Controller
             string addr = "0x"+ DataCleaner.PadHexValue(8, Converter.ConvertBinToHex(tx.Params.Immediate));
             int index = dx.FindIndex(p => p.Addr == addr);
             string value = string.Empty;
-            for (int i = 0; i < 4; i++)
+            //for (int i = 0; i < 4; i++)
+            for (int i = 0; i < dx[index].StoredValue.Count; i++)
             {
                 value = dx[index].StoredValue[i] + value;
             }

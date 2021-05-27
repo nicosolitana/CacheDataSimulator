@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -138,6 +139,7 @@ namespace CacheDataSimulator
         {
             RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
             RegisterTab.Show();
+            DataTabContainer.Hide();
             DataTab.Hide();
             TextTab.Hide();
             RegisterSGTabBtn.FlatAppearance.BorderColor = Color.FromArgb(0, 255, 255, 255);
@@ -151,6 +153,7 @@ namespace CacheDataSimulator
         private void TextSGTabBtn_Click(object sender, System.EventArgs e)
         {
             RegisterTab.Hide();
+            DataTabContainer.Hide();
             DataTab.Hide();
             TextTab.Show();
             TextTab.SetRegisterEditable("Not Register");
@@ -161,8 +164,10 @@ namespace CacheDataSimulator
 
         private void DataSGTabBtn_Click(object sender, System.EventArgs e)
         {
+            DataMemLocTxt.Text = "Enter Memory Location";
             RegisterTab.Hide();
             DataTab.Show();
+            DataTabContainer.Show();
             TextTab.Hide();
             DataTab.SetRegisterEditable("Not Register");
             RegisterTabPanel.BackColor = ColorTranslator.FromHtml("#1A1A1A");
@@ -236,7 +241,7 @@ namespace CacheDataSimulator
 
         private void OpenFileBtn_Click(object sender, System.EventArgs e)
         {
-            OpenFileDialog opDialogBox = new OpenFileDialog
+            OpenFileDialog openFileDL = new OpenFileDialog
             {
                 InitialDirectory = @"C:\",
                 Title = "Browse RISC-V Files",
@@ -253,9 +258,9 @@ namespace CacheDataSimulator
                 ShowReadOnly = true
             };
 
-            if (opDialogBox.ShowDialog() == DialogResult.OK)
+            if (openFileDL.ShowDialog() == DialogResult.OK)
             {
-                filePathTxt.Text = opDialogBox.FileName;
+                filePathTxt.Text = openFileDL.FileName;
                 filePathTxt.Focus();
                 filePathTxt.SelectionStart = filePathTxt.Text.Length;
 
@@ -290,15 +295,6 @@ namespace CacheDataSimulator
                     int wordSize = DataCleaner.BitCounter(Int32.Parse(BlockSizeTxt.Text));
                     CacheController.Init(11-wordSize, wordSize, Int32.Parse(BlockSizeTxt.Text));
 
-
-
-
-
-
-
-
-
-
                     UpdateErrorLog(ValidateInput.NoErr());
                     DataTab.SetTemplateDT(MainCTRL.GenerateDataSGDT());
                     TextTab.SetTemplateDT(MainCTRL.GenerateTextSGDT());
@@ -321,11 +317,7 @@ namespace CacheDataSimulator
 
         private void UpdateErrorLog(string errorMsg)
         {
-            //ErrorLogTxt.Text = ErrorLogTxt.Text
-            //    + errorMsg + "\r\n";
             ErrLog.SetErrMsg(errorMsg + "\r\n");
-            //ErrorLogTxt.SelectionStart = ErrorLogTxt.Text.Length;
-            //ErrorLogTxt.ScrollToCaret();
         }
 
         private void SingleStepBtn_Click(object sender, EventArgs e)
@@ -344,18 +336,15 @@ namespace CacheDataSimulator
                         TextTab.SetSelectedRow(tx.Address, "TextSegment");
                         TextSGTabBtn_Click(sender, e);
 
-
                         // Cache Simulation
                         SimulateCache(tx);
-
-                        //MainCTRL.cacheList = CacheController.UpdateCache(tx, MainCTRL.DataSGDT, MainCTRL.cacheList, IsMRU);
-                        //SetCacheDT(MainCTRL.GenerateCacheDT());
-                        //cacheHitLbl.Text = CacheController.CacheHit.ToString();
-                        //cacheMissLbl.Text = CacheController.CacheMiss.ToString();
                     } else
                     {
                         UpdateErrorLog(ValidateInput.ExecuteMsg());
                     }
+                } else
+                {
+                    MessageBox.Show("Please resolve all errors or warning before simulation.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
@@ -370,6 +359,9 @@ namespace CacheDataSimulator
             SetCacheDT(MainCTRL.GenerateCacheDT());
             cacheHitLbl.Text = CacheController.CacheHit.ToString();
             cacheMissLbl.Text = CacheController.CacheMiss.ToString();
+            cacheHitRateLbl.Text = CacheController.CacheHitRate();
+            cacheMissRateLbl.Text = CacheController.CacheMissRate();
+
         }
 
         private void FullExecBtn_Click(object sender, EventArgs e)
@@ -385,19 +377,63 @@ namespace CacheDataSimulator
                         RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
 
                         // Cache
-                        //MainCTRL.cacheList = CacheController.UpdateCache(code, MainCTRL.DataSGDT, MainCTRL.cacheList, IsMRU);
-                        //SetCacheDT(MainCTRL.GenerateCacheDT());
-                        //cacheHitLbl.Text = CacheController.CacheHit.ToString();
-                        //cacheMissLbl.Text = CacheController.CacheMiss.ToString();
                         SimulateCache(code);
                     }
                     //cacheHitRateLbl.Text = CacheController.CacheHitRate();
                     UpdateErrorLog(ValidateInput.ExecuteMsg());
+                } else
+                {
+                    MessageBox.Show("Please resolve all errors or warning before simulation.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void SearchMemLocBtn_Click(object sender, EventArgs e)
+        {
+            int row = DataTab.SearchRow("Not Register", DataMemLocTxt.Text);
+            if (row == -1)
+            {
+                MessageBox.Show("Memory Location not found.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DataMemLocTxt_Enter(object sender, EventArgs e)
+        {
+            if (DataMemLocTxt.Text == "Enter Memory Location")
+            {
+                DataMemLocTxt.Text = "";
+            }
+        }
+
+        private void DataMemLocTxt_Leave(object sender, EventArgs e)
+        {
+            if (DataMemLocTxt.Text == "")
+            {
+                DataMemLocTxt.Text = "Enter Memory Location";
+                DataMemLocTxt.ForeColor = Color.LightGray;
+            }
+        }
+
+        private void SaveBtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDL = new SaveFileDialog
+            {
+                InitialDirectory = @"C:\",
+                Title = "Browse RISC-V Files",
+                DefaultExt = "asm",
+                Filter = "asm files (*.asm)|*.asm",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+
+            if (saveFileDL.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText(saveFileDL.FileName, CodeEditorCtrl.GetCodeEditorRTB());
+                MessageBox.Show("The file has been saved!", "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }
