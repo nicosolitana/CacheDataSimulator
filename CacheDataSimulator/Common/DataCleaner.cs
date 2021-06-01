@@ -92,5 +92,14 @@ namespace CacheDataSimulator.Common
             int diff = maxLen - tmp.Length;
             return String.Empty.PadLeft(diff, '0') + tmp;
         }
+
+        public static string PadHexOpValue(int maxLen, string hexValue, char cPad)
+        {
+            string tmp = hexValue;
+            if (tmp.StartsWith("Imm_"))
+                tmp = tmp.Replace("Imm_", "");
+            int diff = maxLen - tmp.Length;
+            return String.Empty.PadRight(diff, cPad) + tmp;
+        }
     }
 }

@@ -45,12 +45,22 @@ namespace CacheDataSimulator.Controller
                     } else
                     {
 
-                        string thirdParam = tx.SourceCode.Split(' ')[3];
+                        string[] spltParam = tx.SourceCode.Split(' ');
+                        string thirdParam = spltParam[3];
+                        //string thirdParam = tx.Params.Immediate.Substring(9, tx.Params.Immediate.Length-1);
                         int currentAddr = Int32.Parse(Converter.ConvertHexToDec(tx.Address));
                         int i = txSegment.FindIndex(p => p.SourceCode.Contains(thirdParam+":"));
                         int lblAddr = Int32.Parse(Converter.ConvertHexToDec(txSegment[i].Address));
-                        int sub = lblAddr - currentAddr;
-                        string imm = DataCleaner.PadHexValue(12, Converter.ConvertDecToBin(sub.ToString()));
+                        int sub = (lblAddr - currentAddr) / 2;
+                        string imm;
+                        if (sub < 0)
+                        {
+                            imm = Convert.ToString(Int32.Parse(sub.ToString()), 2);
+                            imm = imm.Substring(imm.Length - 12, 12);
+                        } else
+                        {
+                            imm = DataCleaner.PadHexValue(12, Converter.ConvertDecToBin(sub.ToString()));
+                        }
 
                         secondImm = imm.Substring(0, 1) + imm.Substring(2, 6);
                         firstImm = imm.Substring(8, 4) + imm.Substring(1, 1);

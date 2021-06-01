@@ -65,6 +65,13 @@ namespace CacheDataSimulator.Validation
             return err;
         }
 
+        public static string InfiniteLoopMsg()
+        {
+            string err = string.Empty;
+            err += "ERROR: Source code is executing infinitely." + "\r\n";
+            return err;
+        }
+
         public static string AssembleMsg()
         {
             string err = string.Empty;

@@ -53,6 +53,24 @@ namespace CacheDataSimulator.View
             }
         }
 
+        public DataTable ConvertDGtoDT(string type)
+        {
+            if (type == "Register")
+            {
+                DataTable dt = new DataTable();
+                dt = (DataTable)TemplateDG.DataSource;
+                return dt;
+            }
+
+            if (type == "Data")
+            {
+                DataTable dt = new DataTable();
+                dt = (DataTable)TemplateDG.DataSource;
+                return dt;
+            }
+            return new DataTable();
+        }
+
         public int SearchRow(string type, string memLoc)
         {
             TemplateDG.ClearSelection();

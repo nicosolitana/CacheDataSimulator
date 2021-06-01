@@ -57,5 +57,12 @@ namespace CacheDataSimulator.Common
 
             return number;
         }
+
+        public static string ConvertImm(string number)
+        {
+            if (DataCleaner.CheckNumberType(number) == NUM_TYPES.OTH)
+                return number;
+            return ConvertHexToBin(number);
+        }
     }
 }

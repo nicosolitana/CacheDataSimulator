@@ -3,6 +3,7 @@ using CacheDataSimulator.Controller;
 using CacheDataSimulator.Data;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -12,9 +13,11 @@ namespace CacheDataSimulator.Validation
     {
         private static List<string> rgList = new List<string>();
         private static List<DataSegment> dxSG;
+        private static DataTable dataDT;
 
-        public static List<string> ValidateTS(List<DataSegment> dataSG, List<string> code, out string err, out List<TextSegment> txSegment)
+        public static List<string> ValidateTS(DataTable _dataDT, List<DataSegment> dataSG, List<string> code, out string err, out List<TextSegment> txSegment)
         {
+            dataDT = _dataDT;
             dxSG = dataSG;
             err = string.Empty;
             string msg = string.Empty;
@@ -105,10 +108,16 @@ namespace CacheDataSimulator.Validation
                     else
                     {
                         string varName = prms[x].Replace("Imm_", "");
-                        int index = dxSG.FindIndex(p => p.Name.Replace(":", "") == varName);
-                        if (index > -1)
+                        if (varName.StartsWith("0x"))
                         {
-                            paramObj.Immediate = DataCleaner.PadHexValue(12, Converter.ConvertDecToBin(Converter.ConvertHexToDec(dxSG[index].Addr.Replace("0x", ""))));
+                            paramObj.Immediate = DataCleaner.PadHexValue(12, Converter.ConvertDecToBin(Converter.ConvertHexToDec(varName.Replace("0x", ""))));
+                        } else
+                        {
+                            int index = dxSG.FindIndex(p => p.Name.Replace(":", "") == varName);
+                            if (index > -1)
+                            {
+                                paramObj.Immediate = DataCleaner.PadHexValue(12, Converter.ConvertDecToBin(Converter.ConvertHexToDec(dxSG[index].Addr.Replace("0x", ""))));
+                            }
                         }
                     }
                 }
@@ -123,7 +132,13 @@ namespace CacheDataSimulator.Validation
                     paramObj.Immediate = DataCleaner.PadHexValue(12, Converter.ConvertDecToBin(Converter.ConvertHexToDec(dxSG[index].Addr.Replace("0x", ""))));
                 } else
                 {
-                    paramObj.Immediate = DataCleaner.PadHexValue(12, prms[prms.Length - 1]).Replace("Imm_",""); 
+                    if (varName.StartsWith("0x"))
+                    {
+                        paramObj.Immediate = DataCleaner.PadHexValue(12, Converter.ConvertDecToBin(Converter.ConvertHexToDec(varName.Replace("0x", ""))));
+                    } else
+                    {
+                        paramObj.Immediate = DataCleaner.PadHexValue(12, prms[prms.Length - 1]).Replace("Imm_",""); 
+                    }
                 }
             }
 
@@ -146,6 +161,7 @@ namespace CacheDataSimulator.Validation
 
             if (!line.StartsWith("."))
             {
+                arr = arr.Where(x => !string.IsNullOrEmpty(x)).ToArray();
                 lbl = CheckBranch(arr[0], out msg);
 
                 if (string.IsNullOrEmpty(lbl))
@@ -166,8 +182,8 @@ namespace CacheDataSimulator.Validation
                         itemMsg += msg;
                     HasDirective = true;
                 }
-
                 List<string> paramLst = ExtractParameters(arr, start);
+                paramLst = paramLst.Where(x => !string.IsNullOrEmpty(x)).ToList();
                 param = CheckParams(paramLst, HasDirective, paramCount, out msg);
             }
             else
@@ -233,7 +249,11 @@ namespace CacheDataSimulator.Validation
         private static string ExtractValue(int type, string param, out string err)
         {
             err = string.Empty;
-            string num = GetNumber(param);
+            string num;
+            if (param.StartsWith("-"))
+                num = param;
+            else
+                num = GetNumber(param);
             if ((!string.IsNullOrEmpty(num)) && (type > 0) && (Int32.Parse(num) > 32))
             {
                 err += " \t- Parameter " + param + " has exceeded the maximum register count." + "\r\n";
@@ -247,17 +267,43 @@ namespace CacheDataSimulator.Validation
                 if (type == 1)
                     return Converter.ConvertDecToBin(num);
 
-                if (type == 2)
+                if ((type == 2) && (param.StartsWith("-")))
                 {
-                    string paramBin = Converter.ConvertDecToBin(num);
-                    num = Converter.ConvertNumber(GetImmediate(param));
-                    if (num != "0") { 
-                        if (DataCleaner.IsNumType(num, @"\A[0-1]+\Z"))
-                            return paramBin + "," + "Imm_" + num;
-                        else
-                            err += " \t- Immediate value " + num + " is neither a hexadecimal, binary or decimal." + "\r\n";
-                    } 
-                    return paramBin;
+                    string val = Convert.ToString(Int32.Parse(num), 2);
+                    num = val.Substring(val.Length - 12, 12);
+                    return "Imm_" + num; 
+                } else
+                {
+                    if (type == 2)
+                    {
+                        string paramBin = Converter.ConvertDecToBin(num);
+                        num = Converter.ConvertImm(GetImmediate(param));
+                        if (num != "0") { 
+                            if (DataCleaner.CheckNumberType(num) == NUM_TYPES.OTH)
+                            {
+                                num = GetDataAddress(dataDT, num);
+                            }
+                            if (DataCleaner.IsNumType(num, @"\A[0-1]+\Z")) 
+                                return paramBin + "," + "Imm_" + num;
+                            else
+                                err += " \t- Immediate value " + num + " is neither a hexadecimal, binary or decimal." + "\r\n";
+                        } 
+                        return paramBin;
+                    }
+                }
+
+            }
+            return string.Empty;
+        }
+
+        private static string GetDataAddress(DataTable dxDT, string varName)
+        {
+            foreach (DataRow row in dxDT.Rows)
+            {
+                if ((string)row["Name"] == varName)
+                {
+                    string addr = (string)row["Address"];
+                    return Converter.ConvertHexToBin(addr.Replace("0x",""));
                 }
             }
             return string.Empty;
@@ -267,7 +313,7 @@ namespace CacheDataSimulator.Validation
         {
             format = @"[A-Fa-f0-9]+";
             type = 0;
-            if (param.Contains('x'))
+            if ((param.Contains('x')) && !(param.StartsWith("0x")))
             {
                 format = @"x[0-9]+";
                 type = 1;
@@ -277,6 +323,10 @@ namespace CacheDataSimulator.Validation
                     type = 2;
                     format = @"[A-Fa-f0-9]*[(]x[0-9]+[)]";  // @"0[(]x[0-9]+[)]"
                 }
+            } else if (param.StartsWith("-"))
+            {
+                type = 2;
+                format = @"[-]*[0-9]+";
             }
         }
 
@@ -332,6 +382,8 @@ namespace CacheDataSimulator.Validation
 
         public static bool IsValidWord(string str)
         {
+            if (str.StartsWith("-"))
+                str = str.Replace("-", "");
             var res = (Regex.Replace(str, @"[A-Za-z0-9]*", string.Empty)).ToCharArray();
             if (res.Length == 0)
                 return true;

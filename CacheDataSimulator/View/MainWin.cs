@@ -5,6 +5,7 @@ using CacheDataSimulator.Validation;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace CacheDataSimulator
         private static bool IsMRU;
         private MainController MainCTRL;
         private bool IsAssembled = false;
+        private bool IsDone = false;
 
         public MainWin()
         {
@@ -282,6 +284,7 @@ namespace CacheDataSimulator
         {
             try
             {
+                IsDone = false;
                 UpdateErrorLog(ValidateInput.AssembleMsg());
                 //string err = MainCTRL.BuildSourceCode(BlockSizeTxt.Text, CacheSizeTxt.Text, 
                 //    CodeEditorTxt.Text, IsMRU, IsLRU);
@@ -330,8 +333,10 @@ namespace CacheDataSimulator
                     int lastAddr = Int32.Parse(Converter.ConvertHexToDec(MainCTRL.txSG[MainCTRL.txSG.Count - 1].Address.Replace("0x", "")));
                     if(nextValue <= lastAddr)
                     {
+                        MainCTRL.rxSG = MainCTRL.InitializeRegister(RegisterTab.ConvertDGtoDT("Register"));
                         TextSegment tx = MainCTRL.txSG.Where(x => x.Address == OperationController.NextAddr).FirstOrDefault();
-                        MainCTRL.rxSG = OperationController.ExecuteOperation(tx, MainCTRL.dxSG, MainCTRL.rxSG);
+                        MainCTRL.rxSG = OperationController.ExecuteOperation(tx, MainCTRL.DataSGDT, MainCTRL.rxSG);
+
                         RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
                         TextTab.SetSelectedRow(tx.Address, "TextSegment");
                         TextSGTabBtn_Click(sender, e);
@@ -340,6 +345,7 @@ namespace CacheDataSimulator
                         SimulateCache(tx);
                     } else
                     {
+                        IsDone = true;
                         UpdateErrorLog(ValidateInput.ExecuteMsg());
                     }
                 } else
@@ -366,30 +372,53 @@ namespace CacheDataSimulator
 
         private void FullExecBtn_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (IsAssembled)
-                {
-                    foreach (var code in MainCTRL.txSG)
-                    {
-                        // Simulator
-                        MainCTRL.rxSG = OperationController.ExecuteOperation(code, MainCTRL.dxSG, MainCTRL.rxSG);
-                        RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-                        // Cache
-                        SimulateCache(code);
-                    }
-                    //cacheHitRateLbl.Text = CacheController.CacheHitRate();
-                    UpdateErrorLog(ValidateInput.ExecuteMsg());
-                } else
+            //while (stopwatch.Elapsed < TimeSpan.FromSeconds(5))
+            //{
+            //    // Execute your loop here...
+            //}
+
+            while (!IsDone)
+            {
+                SingleStepBtn.PerformClick();
+
+                if(stopwatch.Elapsed > TimeSpan.FromSeconds(5))
                 {
-                    MessageBox.Show("Please resolve all errors or warning before simulation.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    UpdateErrorLog(ValidateInput.InfiniteLoopMsg());
+                    break;
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
+
+
+
+            //try
+            //{
+            //    if (IsAssembled)
+            //    {
+            //        MainCTRL.rxSG = MainCTRL.InitializeRegister(RegisterTab.ConvertDGtoDT("Register"));
+            //        foreach (var code in MainCTRL.txSG)
+            //        {
+            //            // Simulator   MainCTRL.DataSGDT, MainCTRL.dxSG
+            //            MainCTRL.rxSG = OperationController.ExecuteOperation(code, MainCTRL.DataSGDT, MainCTRL.rxSG);
+            //            RegisterTab.SetTemplateDT(MainCTRL.GenerateRegisterSGDT());
+
+            //            // Cache
+            //            SimulateCache(code);
+            //        }
+            //        //cacheHitRateLbl.Text = CacheController.CacheHitRate();
+            //        UpdateErrorLog(ValidateInput.ExecuteMsg());
+            //    } else
+            //    {
+            //        MessageBox.Show("Please resolve all errors or warning before simulation.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
         }
 
         private void SearchMemLocBtn_Click(object sender, EventArgs e)

@@ -87,8 +87,20 @@ namespace CacheDataSimulator.Controller
             return RegisterDT;
         }
 
+        public List<Register> InitializeRegister(DataTable dt)
+        {
+            List<Register> tmp = new List<Register>();
+            foreach (DataRow row in dt.Rows)
+            {
+                tmp.Add(new Register() { 
+                    Name = row["Name"].ToString(),
+                    Value = row["Value"].ToString()
+                });
+            }
+            return tmp;
+        }
 
-        // MAIN EVENTS
+         // MAIN EVENTS
 
         public string BuildSourceCode(string blockSize, string cacheSize, string sourceCode, bool IsMRU)
         {
@@ -177,10 +189,15 @@ namespace CacheDataSimulator.Controller
             msgErr = string.Empty;
             dataSG = ValidateDataSegment.ValidateDS(code, out err);
             msgErr += err;
+            if (string.IsNullOrEmpty(msgErr))
+            {
+                dxSG = dataSG;
+                GenerateDataSGDT();
+            }
 
             txSegment = new List<TextSegment>();
             err = string.Empty;
-            List<string> txCode = ValidateTextSegment.ValidateTS(dataSG, code, out err, out txSegment);
+            List<string> txCode = ValidateTextSegment.ValidateTS(DataSGDT, dataSG, code, out err, out txSegment);
             msgErr += err;
 
             List<string> globalLst = new List<string>();
