@@ -384,7 +384,7 @@ namespace CacheDataSimulator
             {
                 SingleStepBtn.PerformClick();
 
-                if(stopwatch.Elapsed > TimeSpan.FromSeconds(5))
+                if(stopwatch.Elapsed > TimeSpan.FromSeconds(20))
                 {
                     UpdateErrorLog(ValidateInput.InfiniteLoopMsg());
                     break;

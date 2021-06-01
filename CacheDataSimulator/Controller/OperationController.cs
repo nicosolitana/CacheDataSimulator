@@ -105,8 +105,10 @@ namespace CacheDataSimulator.Controller
         {
             // ADDI x1, x2, x3
             int rsOne = GetRegisterValue(rxSG, GetRegisterIndex(rxSG, tx.Params.RSourceOne));
-            //if()
-            int rsTwo = Int32.Parse(Converter.ConvertBinToDec(tx.Params.Immediate + tx.Params.RSourceTwo));
+            string immRsTwo = tx.Params.Immediate + tx.Params.RSourceTwo;
+            if (immRsTwo.Substring(0, 1) == "1")
+                immRsTwo = DataCleaner.PadHexOpValue(64, immRsTwo, '1');
+            int rsTwo = Int32.Parse(Converter.ConvertBinToDec(immRsTwo));
             string rsDest = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertDecToHex((rsOne + rsTwo).ToString()));
             int index = GetRegisterIndex(rxSG, tx.Params.RDestination);
             rxSG[index].Value = rsDest;
