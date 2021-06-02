@@ -72,7 +72,10 @@ namespace CacheDataSimulator.Controller
         {
             if ((tx.Operation.ToLower() == "lw") ||
                 (tx.Operation.ToLower() == "lh") ||
-                (tx.Operation.ToLower() == "lb"))
+                (tx.Operation.ToLower() == "lb") ||
+                (tx.Operation.ToLower() == "sw") ||
+                (tx.Operation.ToLower() == "sh") ||
+                (tx.Operation.ToLower() == "sb"))
             {
                 int imm = Int32.Parse(Converter.ConvertBinToDec(tx.Params.Immediate));
                 int sourceOne = 0;

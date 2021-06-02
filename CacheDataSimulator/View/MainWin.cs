@@ -372,25 +372,31 @@ namespace CacheDataSimulator
 
         private void FullExecBtn_Click(object sender, EventArgs e)
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             //while (stopwatch.Elapsed < TimeSpan.FromSeconds(5))
             //{
             //    // Execute your loop here...
             //}
 
-            while (!IsDone)
+            if (IsAssembled)
             {
-                SingleStepBtn.PerformClick();
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
 
-                if(stopwatch.Elapsed > TimeSpan.FromSeconds(20))
+                while (!IsDone)
                 {
-                    UpdateErrorLog(ValidateInput.InfiniteLoopMsg());
-                    break;
+                    SingleStepBtn.PerformClick();
+
+                    if(stopwatch.Elapsed > TimeSpan.FromSeconds(20))
+                    {
+                        UpdateErrorLog(ValidateInput.InfiniteLoopMsg());
+                        break;
+                    }
                 }
             }
-
+            else
+            {
+                MessageBox.Show("Please resolve all errors or warning before simulation.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
 
 
@@ -421,7 +427,7 @@ namespace CacheDataSimulator
             //}
         }
 
-        private void SearchMemLocBtn_Click(object sender, EventArgs e)
+            private void SearchMemLocBtn_Click(object sender, EventArgs e)
         {
             int row = DataTab.SearchRow("Not Register", DataMemLocTxt.Text);
             if (row == -1)
