@@ -150,7 +150,6 @@ namespace CacheDataSimulator.Controller
             int sourceOne = 0;
             if (tx.Params.RSourceOne != null)
             {
-
                 sourceOne = Int32.Parse(Converter.ConvertHexToDec(
                         rxSG[GetRegisterIndex(rxSG, tx.Params.RSourceOne)].Value.Replace("0x", "")
                     ));

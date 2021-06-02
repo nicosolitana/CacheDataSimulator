@@ -22,7 +22,7 @@ namespace CacheDataSimulator.View
         public void Init()
         {
             var syntaxHighlighter = new SyntaxHighlighter(ErrorLogRTB);
-            syntaxHighlighter.AddPattern(new PatternDefinition(@"ERROR:[\s]*[A-Za-z0-9\s\:]+"), new SyntaxStyle(ColorTranslator.FromHtml("#D54545")));
+            syntaxHighlighter.AddPattern(new PatternDefinition(@"ERROR:[\s]*[A-Za-z0-9\s\:]+"), new SyntaxStyle(ColorTranslator.FromHtml("#D54545"), true, false));
             syntaxHighlighter.AddPattern(new PatternDefinition(@"-(\s)+[A-Za-z0-9\s\(\)]*."), new SyntaxStyle(ColorTranslator.FromHtml("#FEBEBE")));
             syntaxHighlighter.AddPattern(new PatternDefinition(@"FOLLOW:[[(\s\S)+]+]."), new SyntaxStyle(ColorTranslator.FromHtml("#0DBA78")));
             syntaxHighlighter.AddPattern(new PatternDefinition(@"ASSEMBLE:[(\s\S)+]+!"), new SyntaxStyle(ColorTranslator.FromHtml("#D9CE67")));

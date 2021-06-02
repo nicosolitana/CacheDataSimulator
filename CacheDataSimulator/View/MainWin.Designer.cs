@@ -67,12 +67,14 @@
             this.panel18 = new System.Windows.Forms.Panel();
             this.panel41 = new System.Windows.Forms.Panel();
             this.panel42 = new System.Windows.Forms.Panel();
+            this.CodeEditorCtrl = new CacheDataSimulator.View.CodeEditor();
             this.panel43 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.panel44 = new System.Windows.Forms.Panel();
             this.panel45 = new System.Windows.Forms.Panel();
             this.panel26 = new System.Windows.Forms.Panel();
             this.panel35 = new System.Windows.Forms.Panel();
+            this.ErrLog = new CacheDataSimulator.View.ErrorLog();
             this.panel37 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.panel38 = new System.Windows.Forms.Panel();
@@ -102,11 +104,14 @@
             this.panel48 = new System.Windows.Forms.Panel();
             this.panel49 = new System.Windows.Forms.Panel();
             this.panel50 = new System.Windows.Forms.Panel();
+            this.RegisterTab = new CacheDataSimulator.View.CustomTab();
             this.DataTabContainer = new System.Windows.Forms.Panel();
             this.panel54 = new System.Windows.Forms.Panel();
+            this.DataTab = new CacheDataSimulator.View.CustomTab();
             this.panel52 = new System.Windows.Forms.Panel();
             this.SearchMemLocBtn = new System.Windows.Forms.Button();
             this.DataMemLocTxt = new System.Windows.Forms.TextBox();
+            this.TextTab = new CacheDataSimulator.View.CustomTab();
             this.panel51 = new System.Windows.Forms.Panel();
             this.panel53 = new System.Windows.Forms.Panel();
             this.TextSGTabBtn = new System.Windows.Forms.Button();
@@ -133,11 +138,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.panel46 = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.CodeEditorCtrl = new CacheDataSimulator.View.CodeEditor();
-            this.ErrLog = new CacheDataSimulator.View.ErrorLog();
-            this.RegisterTab = new CacheDataSimulator.View.CustomTab();
-            this.DataTab = new CacheDataSimulator.View.CustomTab();
-            this.TextTab = new CacheDataSimulator.View.CustomTab();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel13.SuspendLayout();
@@ -616,6 +616,14 @@
             this.panel42.Size = new System.Drawing.Size(1175, 655);
             this.panel42.TabIndex = 1;
             // 
+            // CodeEditorCtrl
+            // 
+            this.CodeEditorCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CodeEditorCtrl.Location = new System.Drawing.Point(0, 0);
+            this.CodeEditorCtrl.Name = "CodeEditorCtrl";
+            this.CodeEditorCtrl.Size = new System.Drawing.Size(1175, 655);
+            this.CodeEditorCtrl.TabIndex = 0;
+            // 
             // panel43
             // 
             this.panel43.Controls.Add(this.label7);
@@ -675,6 +683,14 @@
             this.panel35.Name = "panel35";
             this.panel35.Size = new System.Drawing.Size(1175, 165);
             this.panel35.TabIndex = 1;
+            // 
+            // ErrLog
+            // 
+            this.ErrLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ErrLog.Location = new System.Drawing.Point(0, 0);
+            this.ErrLog.Name = "ErrLog";
+            this.ErrLog.Size = new System.Drawing.Size(1175, 165);
+            this.ErrLog.TabIndex = 1;
             // 
             // panel37
             // 
@@ -817,7 +833,7 @@
             this.cacheMissRateLbl.AutoSize = true;
             this.cacheMissRateLbl.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cacheMissRateLbl.ForeColor = System.Drawing.Color.LightGray;
-            this.cacheMissRateLbl.Location = new System.Drawing.Point(185, 156);
+            this.cacheMissRateLbl.Location = new System.Drawing.Point(223, 156);
             this.cacheMissRateLbl.Name = "cacheMissRateLbl";
             this.cacheMissRateLbl.Size = new System.Drawing.Size(19, 23);
             this.cacheMissRateLbl.TabIndex = 10;
@@ -839,7 +855,7 @@
             this.cacheHitRateLbl.AutoSize = true;
             this.cacheHitRateLbl.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cacheHitRateLbl.ForeColor = System.Drawing.Color.LightGray;
-            this.cacheHitRateLbl.Location = new System.Drawing.Point(185, 92);
+            this.cacheHitRateLbl.Location = new System.Drawing.Point(223, 92);
             this.cacheHitRateLbl.Name = "cacheHitRateLbl";
             this.cacheHitRateLbl.Size = new System.Drawing.Size(19, 23);
             this.cacheHitRateLbl.TabIndex = 8;
@@ -850,7 +866,7 @@
             this.cacheMissLbl.AutoSize = true;
             this.cacheMissLbl.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cacheMissLbl.ForeColor = System.Drawing.Color.LightGray;
-            this.cacheMissLbl.Location = new System.Drawing.Point(185, 125);
+            this.cacheMissLbl.Location = new System.Drawing.Point(223, 125);
             this.cacheMissLbl.Name = "cacheMissLbl";
             this.cacheMissLbl.Size = new System.Drawing.Size(19, 23);
             this.cacheMissLbl.TabIndex = 7;
@@ -861,7 +877,7 @@
             this.cacheHitLbl.AutoSize = true;
             this.cacheHitLbl.Font = new System.Drawing.Font("Arial Narrow", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cacheHitLbl.ForeColor = System.Drawing.Color.LightGray;
-            this.cacheHitLbl.Location = new System.Drawing.Point(185, 59);
+            this.cacheHitLbl.Location = new System.Drawing.Point(223, 59);
             this.cacheHitLbl.Name = "cacheHitLbl";
             this.cacheHitLbl.Size = new System.Drawing.Size(19, 23);
             this.cacheHitLbl.TabIndex = 6;
@@ -1034,6 +1050,14 @@
             this.panel50.Size = new System.Drawing.Size(430, 855);
             this.panel50.TabIndex = 1;
             // 
+            // RegisterTab
+            // 
+            this.RegisterTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RegisterTab.Location = new System.Drawing.Point(0, 0);
+            this.RegisterTab.Name = "RegisterTab";
+            this.RegisterTab.Size = new System.Drawing.Size(430, 855);
+            this.RegisterTab.TabIndex = 2;
+            // 
             // DataTabContainer
             // 
             this.DataTabContainer.Controls.Add(this.panel54);
@@ -1052,6 +1076,14 @@
             this.panel54.Name = "panel54";
             this.panel54.Size = new System.Drawing.Size(430, 823);
             this.panel54.TabIndex = 2;
+            // 
+            // DataTab
+            // 
+            this.DataTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataTab.Location = new System.Drawing.Point(0, 0);
+            this.DataTab.Name = "DataTab";
+            this.DataTab.Size = new System.Drawing.Size(430, 823);
+            this.DataTab.TabIndex = 0;
             // 
             // panel52
             // 
@@ -1093,6 +1125,14 @@
             this.toolTip1.SetToolTip(this.DataMemLocTxt, "Block Size");
             this.DataMemLocTxt.Enter += new System.EventHandler(this.DataMemLocTxt_Enter);
             this.DataMemLocTxt.Leave += new System.EventHandler(this.DataMemLocTxt_Leave);
+            // 
+            // TextTab
+            // 
+            this.TextTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TextTab.Location = new System.Drawing.Point(0, 0);
+            this.TextTab.Name = "TextTab";
+            this.TextTab.Size = new System.Drawing.Size(430, 855);
+            this.TextTab.TabIndex = 1;
             // 
             // panel51
             // 
@@ -1369,46 +1409,6 @@
             this.panel46.Name = "panel46";
             this.panel46.Size = new System.Drawing.Size(113, 5);
             this.panel46.TabIndex = 1;
-            // 
-            // CodeEditorCtrl
-            // 
-            this.CodeEditorCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CodeEditorCtrl.Location = new System.Drawing.Point(0, 0);
-            this.CodeEditorCtrl.Name = "CodeEditorCtrl";
-            this.CodeEditorCtrl.Size = new System.Drawing.Size(1175, 655);
-            this.CodeEditorCtrl.TabIndex = 0;
-            // 
-            // ErrLog
-            // 
-            this.ErrLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ErrLog.Location = new System.Drawing.Point(0, 0);
-            this.ErrLog.Name = "ErrLog";
-            this.ErrLog.Size = new System.Drawing.Size(1175, 165);
-            this.ErrLog.TabIndex = 1;
-            // 
-            // RegisterTab
-            // 
-            this.RegisterTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RegisterTab.Location = new System.Drawing.Point(0, 0);
-            this.RegisterTab.Name = "RegisterTab";
-            this.RegisterTab.Size = new System.Drawing.Size(430, 855);
-            this.RegisterTab.TabIndex = 2;
-            // 
-            // DataTab
-            // 
-            this.DataTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataTab.Location = new System.Drawing.Point(0, 0);
-            this.DataTab.Name = "DataTab";
-            this.DataTab.Size = new System.Drawing.Size(430, 823);
-            this.DataTab.TabIndex = 0;
-            // 
-            // TextTab
-            // 
-            this.TextTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TextTab.Location = new System.Drawing.Point(0, 0);
-            this.TextTab.Name = "TextTab";
-            this.TextTab.Size = new System.Drawing.Size(430, 855);
-            this.TextTab.TabIndex = 1;
             // 
             // MainWin
             // 

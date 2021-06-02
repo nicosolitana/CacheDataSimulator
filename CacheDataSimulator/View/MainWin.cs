@@ -361,7 +361,7 @@ namespace CacheDataSimulator
 
         private void SimulateCache(TextSegment code)
         {
-            MainCTRL.cacheList = CacheController.UpdateCache(code, MainCTRL.DataSGDT, MainCTRL.cacheList, IsMRU);
+            MainCTRL.cacheList = CacheController.UpdateCache(code, MainCTRL.DataSGDT, MainCTRL.cacheList, IsMRU, MainCTRL.rxSG);
             SetCacheDT(MainCTRL.GenerateCacheDT());
             cacheHitLbl.Text = CacheController.CacheHit.ToString();
             cacheMissLbl.Text = CacheController.CacheMiss.ToString();

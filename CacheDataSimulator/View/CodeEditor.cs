@@ -54,22 +54,22 @@ namespace CacheDataSimulator.View
             syntaxHighlighter.AddPattern(new PatternDefinition(@"[A-Za-z0-9]+\:"), new SyntaxStyle(ColorTranslator.FromHtml("#F4285F")));
 
             // Directive
-            syntaxHighlighter.AddPattern(new PatternDefinition(@"\.(\S+)"), new SyntaxStyle(ColorTranslator.FromHtml("#B47BB0")));
+            syntaxHighlighter.AddPattern(new PatternDefinition(@"\.(\S+)"), new SyntaxStyle(ColorTranslator.FromHtml("#B47BB0"), true, false));
 
             // keywords1
-            syntaxHighlighter.AddPattern(new PatternDefinition("lb", "lh", "lw", "LB", "LH", "LW"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD")));
+            syntaxHighlighter.AddPattern(new PatternDefinition("lb", "lh", "lw", "LB", "LH", "LW"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD"), true, false));
 
             // keywords1
-            syntaxHighlighter.AddPattern(new PatternDefinition("sw", "sh", "sb", "SW", "SH", "SB"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD")));
+            syntaxHighlighter.AddPattern(new PatternDefinition("sw", "sh", "sb", "SW", "SH", "SB"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD"), true, false));
 
             // keywords1
-            syntaxHighlighter.AddPattern(new PatternDefinition("addi", "slti", "ADDI", "SLTI"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD")));
+            syntaxHighlighter.AddPattern(new PatternDefinition("addi", "slti", "ADDI", "SLTI"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD"), true, false));
 
             // keywords1
-            syntaxHighlighter.AddPattern(new PatternDefinition("add", "slt", "sub", "ADD", "SLT", "SUB"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD")));
+            syntaxHighlighter.AddPattern(new PatternDefinition("add", "slt", "sub", "ADD", "SLT", "SUB"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD"), true, false));
 
             // keywords1
-            syntaxHighlighter.AddPattern(new PatternDefinition("beq", "bne", "blt", "bge", "BEQ", "BNE", "BLT", "BGE"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD")));
+            syntaxHighlighter.AddPattern(new PatternDefinition("beq", "bne", "blt", "bge", "BEQ", "BNE", "BLT", "BGE"), new SyntaxStyle(ColorTranslator.FromHtml("#1390AD"), true, false));
         }
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]

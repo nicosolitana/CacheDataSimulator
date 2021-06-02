@@ -62,13 +62,30 @@ namespace CacheDataSimulator.Controller
             return i;
         }
 
-        public static List<Cache> UpdateCache(TextSegment tx, DataTable dxDT, List<Cache> cacheLst, bool IsMRU)
+        private static int GetRegisterIndex(List<Register> rxSG, string param)
+        {
+            string paramName = "x" + Converter.ConvertHexToDec(Converter.ConvertBinToHex(param));
+            return rxSG.FindIndex(p => p.Name == paramName);
+        }
+
+        public static List<Cache> UpdateCache(TextSegment tx, DataTable dxDT, List<Cache> cacheLst, bool IsMRU, List<Register> rxSG)
         {
             if ((tx.Operation.ToLower() == "lw") ||
                 (tx.Operation.ToLower() == "lh") ||
                 (tx.Operation.ToLower() == "lb"))
             {
-                string addr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertBinToHex(tx.Params.Immediate));
+                int imm = Int32.Parse(Converter.ConvertBinToDec(tx.Params.Immediate));
+                int sourceOne = 0;
+                if (tx.Params.RSourceOne != null)
+                {
+                    sourceOne = Int32.Parse(Converter.ConvertHexToDec(
+                            rxSG[GetRegisterIndex(rxSG, tx.Params.RSourceOne)].Value.Replace("0x", "")
+                        ));
+                }
+                string addr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertDecToHex((imm + sourceOne).ToString()));
+
+                // string addr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertBinToHex(tx.Params.Immediate));
+
                 int IsInCache = cacheLst.FindIndex(p => p.Addr == addr);
 
                 int beforeAge = 0, afterAge = 0;
