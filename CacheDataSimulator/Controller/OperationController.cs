@@ -3,6 +3,8 @@ using CacheDataSimulator.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CacheDataSimulator.Controller
 {
@@ -38,9 +40,9 @@ namespace CacheDataSimulator.Controller
                     case "SUB": rxSG = SUB(); break;
                     case "ADDI": rxSG = ADDI(); break;
                     case "SLTI": rxSG = SLTI(); break;
-                    case "SW":                                  // should sign extend???
-                    case "SH":
-                    case "SB": rxSG = SW();  break;
+                    case "SW": rxSG = SW(); break;     
+                    case "SH": rxSG = SH(); break;
+                    case "SB": rxSG = SB();  break;
                     case "BEQ": rxSG = BEQ(); break;
                     case "BNE": rxSG = BNE(); break;
                     case "BLT": rxSG = BLT(); break;
@@ -217,11 +219,69 @@ namespace CacheDataSimulator.Controller
         // STORE
         private static List<Register> SW()
         {
-            // SW x1, x2
-            rxSG[GetRegisterIndex(rxSG, tx.Params.RDestination)].Value = rxSG[GetRegisterIndex(rxSG, tx.Params.RSourceOne)].Value;
+            int imm = Int32.Parse(Converter.ConvertBinToDec(tx.Params.Immediate));
+            int sourceOne = 0;
+            if (tx.Params.RSourceOne != null)
+            {
+
+                sourceOne = Int32.Parse(Converter.ConvertHexToDec(
+                        rxSG[GetRegisterIndex(rxSG, tx.Params.RSourceOne)].Value.Replace("0x", "")
+                    ));
+            }
+
+            string addr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertDecToHex((imm + sourceOne).ToString()));
+            string value = rxSG[GetRegisterIndex(rxSG, tx.Params.RDestination)].Value.Replace("0x","");
+            var lines = Regex.Matches(value, @"[\s\S]{0,2}").Cast<Match>().Select(x => x.Value).ToList<string>();
+            lines.RemoveAll(s => string.IsNullOrWhiteSpace(s));
+            lines.Reverse();
+            SetRowValue(addr, 4, lines);
+
             return rxSG;
         }
 
+        private static List<Register> SH()
+        {
+            int imm = Int32.Parse(Converter.ConvertBinToDec(tx.Params.Immediate));
+            int sourceOne = 0;
+            if (tx.Params.RSourceOne != null)
+            {
+
+                sourceOne = Int32.Parse(Converter.ConvertHexToDec(
+                        rxSG[GetRegisterIndex(rxSG, tx.Params.RSourceOne)].Value.Replace("0x", "")
+                    ));
+            }
+
+            string addr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertDecToHex((imm + sourceOne).ToString()));
+            string value = rxSG[GetRegisterIndex(rxSG, tx.Params.RDestination)].Value.Replace("0x", "");
+            var lines = Regex.Matches(value, @"[\s\S]{0,2}").Cast<Match>().Select(x => x.Value).ToList<string>();
+            lines.RemoveAll(s => string.IsNullOrWhiteSpace(s));
+            lines.Reverse();
+            SetRowValue(addr, 2, lines);
+
+            return rxSG;
+        }
+
+        private static List<Register> SB()
+        {
+            int imm = Int32.Parse(Converter.ConvertBinToDec(tx.Params.Immediate));
+            int sourceOne = 0;
+            if (tx.Params.RSourceOne != null)
+            {
+
+                sourceOne = Int32.Parse(Converter.ConvertHexToDec(
+                        rxSG[GetRegisterIndex(rxSG, tx.Params.RSourceOne)].Value.Replace("0x", "")
+                    ));
+            }
+
+            string addr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertDecToHex((imm + sourceOne).ToString()));
+            string value = rxSG[GetRegisterIndex(rxSG, tx.Params.RDestination)].Value.Replace("0x", "");
+            var lines = Regex.Matches(value, @"[\s\S]{0,2}").Cast<Match>().Select(x => x.Value).ToList<string>();
+            lines.RemoveAll(s => string.IsNullOrWhiteSpace(s));
+            lines.Reverse();
+            SetRowValue(addr, 1, lines);
+
+            return rxSG;
+        }
         // BRANCH
         private static List<Register> BEQ()
         {
@@ -286,6 +346,33 @@ namespace CacheDataSimulator.Controller
                 NextAddr = "0x" + DataCleaner.PadHexValue(8, Converter.ConvertDecToHex(ioffSet.ToString()));
             }
             return rxSG;
+        }
+
+        private static void SetRowValue(string addr, int limit, List<string> newValue)
+        {
+            int i = 0;
+            int oLimit = limit;
+            string value = string.Empty;
+            foreach (DataRow row in dxDT.Rows)
+            {
+                if (oLimit != limit)
+                {
+                    row["Value"] = "0x" + newValue[i];
+                    limit--;
+                    i++;
+                }
+
+                if ((string)row["Address"] == addr)
+                {
+                    row["Value"] = "0x" + newValue[i];
+                    limit--;
+                    i++;
+                }
+
+                if (limit == 0)
+                    break;
+            }
+            //return string.Empty;
         }
 
         private static string GetRowValue(string addr, int limit)

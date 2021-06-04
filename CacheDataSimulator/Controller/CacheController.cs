@@ -155,7 +155,26 @@ namespace CacheDataSimulator.Controller
                 if(beforeAge != afterAge)
                     cacheLst = UpdateCacheAge(cacheLst, IsInCache, blockSize);
             }
+
+            foreach (var cache in cacheLst)
+            {
+                cache.Value = GetValue(dxDT, cache.Addr);
+            }
+
             return cacheLst;
+        }
+
+        private static string GetValue(DataTable dxDT, string addr)
+        {
+            string value = string.Empty;
+            foreach (DataRow row in dxDT.Rows)
+            {
+                if ((string)row["Address"] == addr)
+                {
+                    return (string)row["Value"];
+                }
+            }
+            return string.Empty;
         }
 
         public static string CacheHitRate()

@@ -56,8 +56,8 @@ namespace CacheDataSimulator.Common
         {
             //if (IsNumType(number, @"\A[0-1]+\Z"))
             //    return NUM_TYPES.BIN;
-
-            if (IsNumType(number, @"\A[0-9]+\Z"))
+            //\A[0-9]+\Z    \A[-]{0,1}$?[0-9]+\Z
+            if (IsNumType(number, @"\A[0-9]+\Z")) 
                 return NUM_TYPES.DEC;
 
             if(IsNumType(number, @"\A[A-Fa-f0-9]+\Z"))

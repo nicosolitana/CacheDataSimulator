@@ -1,5 +1,6 @@
 ﻿using CacheDataSimulator.Common;
 using CacheDataSimulator.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -274,7 +275,18 @@ namespace CacheDataSimulator.Validation
                     }
                 }
                 else
-                    err = " \t- Specified an invalid value (" + tmp + ") that is neither an INT nor HEX." + "\r\n";
+                {
+                    if (DataCleaner.IsNumType(tmp, @"\A[-]{0,1}$?[0-9]+\Z"))
+                    {
+                        string binValue = Converter.ConvertDecToBin(tmp);
+                        binValue = binValue.Substring(binValue.Length - 32, 32);
+                        cleanedVal.Add(Converter.ConvertBinToHex(binValue));
+                    }
+                    else
+                    {
+                        err = " \t- Specified an invalid value (" + tmp + ") that is neither an INT nor HEX." + "\r\n";
+                    }
+                }
             }
             return string.Join(",", cleanedVal);
         }
